@@ -61,14 +61,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-        // For the coyote timer
-        if (coyoteTimeCounter > 0f)
+        jumpBufferCounter = jumpBufferTime;
+        if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f)
         {
             rb.linearVelocity = new Vector2(
                 rb.linearVelocity.x,
                 jumpForce
             );
 
+            jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
     }
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
         //Debug
         //Debug.Log(isGrounded);
 
-        // For the coyote jump timer (basically gives a grace period to jump after not touching ground
+        // For the coyote jump timer
         if (isGrounded)
         {
             coyoteTimeCounter = coyoteTime;
@@ -94,6 +95,24 @@ public class PlayerController : MonoBehaviour
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+        }
+        
+        // Timer for jump buffer
+        if (jumpBufferCounter > 0f)
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+        
+        // Jump
+        if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f)
+        {
+            rb.linearVelocity = new Vector2(
+                rb.linearVelocity.x,
+                jumpForce
+            );
+
+            jumpBufferCounter = 0f;
+            coyoteTimeCounter = 0f;
         }
     }
 
