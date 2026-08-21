@@ -50,19 +50,31 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         controls.Player.Enable();
+        // Jump
         controls.Player.Jump.performed += OnJumpPerformed;
+        controls.Player.Jump.canceled += OnJumpCanceled;
     }
 
     private void OnDisable()
     {
+        // Jump
         controls.Player.Jump.performed -= OnJumpPerformed;
+        controls.Player.Jump.canceled -= OnJumpCanceled;
         controls.Player.Disable();
     }
 
    private void OnJumpPerformed(InputAction.CallbackContext ctx)
-{
+    {
     jumpBufferCounter = jumpBufferTime;
-}
+    }   
+   
+    private void OnJumpCanceled(InputAction.CallbackContext ctx)
+    {
+        if (rb.linearVelocity.y > 0f) // off ground and going up instead of when going down.
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f); // 0.5f is for grav
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
