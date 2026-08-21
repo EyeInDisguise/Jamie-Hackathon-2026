@@ -97,6 +97,12 @@ public class PlayerController : MonoBehaviour
         //Debug
         //Debug.Log(isGrounded);
         
+        // To check if player just landed on the ground (animation)
+        if (!wasGrounded && isGrounded)
+        {
+            animator.SetTrigger("Land");
+        }
+        
         // Detect when landed
         if (isGrounded && rb.linearVelocity.y <= 0f)
         {
@@ -142,7 +148,12 @@ public class PlayerController : MonoBehaviour
         // For animation logic
         // For the speed, acceleration is also accounted for instead of just input cause moving direction will make it 0
         float animationSpeed = Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(rb.linearVelocity.x) / moveSpeed);
-        animator.SetFloat("Speed", animationSpeed);    }
+        animator.SetFloat("Speed", animationSpeed);   
+        
+        animator.SetBool("Jumping", isJumping);
+        animator.SetFloat("VelocityY", rb.linearVelocity.y);
+        animator.SetBool("Grounded", isGrounded);
+    }
 
     private void FixedUpdate()
     {
