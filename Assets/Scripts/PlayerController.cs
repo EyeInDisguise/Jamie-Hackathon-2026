@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckRadius = 0.2f;
     
+    [Header("Gravity")]
+    [SerializeField] private float fallGravityMultiplier = 2f;
     
     // Components
     private Rigidbody2D rb;
@@ -125,6 +127,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        
+        // When going down, adds faster falling gravity
+        if (rb.linearVelocity.y < 0f) 
+        { 
+            rb.linearVelocity += Vector2.up * (Physics2D.gravity.y * (fallGravityMultiplier - 1f) * 
+                                               Time.fixedDeltaTime);
+        }
     }
     
     private void CheckGroundStatus()
