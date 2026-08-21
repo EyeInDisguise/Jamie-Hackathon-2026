@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
     [Header("Gravity")]
     [SerializeField] private float fallGravityMultiplier = 2f;
     
+    [Header("Ac/De-eleration")]
+    [SerializeField] private float acceleration = 50f;
+    [SerializeField] private float deceleration = 60f;
+    
     // Components
     private Rigidbody2D rb;
     private Animator animator;
@@ -126,7 +130,16 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        // For acceleration/deceleration 
+        float targetSpeed = horizontalInput * moveSpeed;
+
+        float rate = horizontalInput != 0 ? acceleration : deceleration;
+        
+        // Instead of straight to 0->8, goes like 0->1->2....->8
+        float newXVelocity = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, rate * 
+            Time.fixedDeltaTime);
+
+        rb.linearVelocity = new Vector2(newXVelocity, rb.linearVelocity.y);
         
         // When going down, adds faster falling gravity
         if (rb.linearVelocity.y < 0f) 
