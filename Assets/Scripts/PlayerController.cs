@@ -128,6 +128,16 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
+        
+        // Flip the player depending on direction
+        if (horizontalInput > 0f)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (horizontalInput < 0f)
+        {
+            spriteRenderer.flipX = true;
+        }
     }
 
     private void FixedUpdate()
