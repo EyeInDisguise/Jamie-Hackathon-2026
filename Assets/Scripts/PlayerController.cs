@@ -61,10 +61,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-        // if grounded, can jump
-        if (isGrounded)
+        // For the coyote timer
+        if (coyoteTimeCounter > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(
+                rb.linearVelocity.x,
+                jumpForce
+            );
+
+            coyoteTimeCounter = 0f;
         }
     }
 
@@ -81,6 +86,15 @@ public class PlayerController : MonoBehaviour
         //Debug
         //Debug.Log(isGrounded);
 
+        // For the coyote jump timer (basically gives a grace period to jump after not touching ground
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()
