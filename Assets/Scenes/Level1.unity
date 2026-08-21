@@ -1019,7 +1019,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 8
   jumpForce: 16
-  coyoteTime: 0.05
+  coyoteTime: 0.08
   jumpBufferTime: 0.1
   groundCheck: {fileID: 384837912}
   groundLayer:

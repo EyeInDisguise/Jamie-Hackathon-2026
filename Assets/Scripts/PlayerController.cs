@@ -46,6 +46,9 @@ public class PlayerController : MonoBehaviour
     private float jumpBufferCounter;
     private bool isJumping;
     
+    // Stores current ability
+    private int currentAbility = 0;
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -153,6 +156,13 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Jumping", isJumping);
         animator.SetFloat("VelocityY", rb.linearVelocity.y);
         animator.SetBool("Grounded", isGrounded);
+        
+        // Abilities
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) currentAbility = 1;
+        if (Keyboard.current.digit2Key.wasPressedThisFrame) currentAbility = 2;
+        if (Keyboard.current.digit3Key.wasPressedThisFrame) currentAbility = 3;
+        if (Keyboard.current.digit4Key.wasPressedThisFrame) currentAbility = 4;
+        Debug.Log("Ability: " + currentAbility);
     }
 
     private void FixedUpdate()
