@@ -11,6 +11,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.15f;
     [SerializeField] private float jumpBufferTime = 0.2f;
     
+    [Header("Ground Detection")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    
+    
     // Components
     private Rigidbody2D rb;
     private Animator animator;
@@ -64,6 +70,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontalInput = controls.Player.Move.ReadValue<float>();
+        
+        CheckGroundStatus();
+        //Debug
+        Debug.Log(isGrounded);
+
     }
 
     private void FixedUpdate()
@@ -72,5 +83,16 @@ public class PlayerController : MonoBehaviour
             horizontalInput * moveSpeed,
             rb.linearVelocity.y
         );
+    }
+    
+    private void CheckGroundStatus()
+    {
+        wasGrounded = isGrounded;
+
+        // Just checks if player is grounded
+        isGrounded = Physics2D.OverlapCircle(
+            groundCheck.position,
+            groundCheckRadius,
+            groundLayer);
     }
 }
