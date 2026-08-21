@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 
 public class PlayerController : MonoBehaviour
@@ -24,7 +25,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 60f;
     
+    [Header("FallSpeed")]
     [SerializeField] private float maxFallSpeed = 20f;
+    
+    [Header("Dashing Stuff")]
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashDuration = 0.2f;
+    private bool isDashing;
+
     
     // Components
     private Rigidbody2D rb;
@@ -40,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private bool wasGrounded;
     private float velocityXSmoothing;
 
-    // Jump state
+    // Jump 
     private bool jumpInputHeld;
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
@@ -51,6 +59,7 @@ public class PlayerController : MonoBehaviour
     
     private void Awake()
     {
+        // Initialises all the components
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -163,10 +172,20 @@ public class PlayerController : MonoBehaviour
         if (Keyboard.current.digit3Key.wasPressedThisFrame) currentAbility = 3;
         if (Keyboard.current.digit4Key.wasPressedThisFrame) currentAbility = 4;
         Debug.Log("Ability: " + currentAbility);
+        
+        // Dashing
+        // If 1 (dash) is stored and dash is pressed (shift), then do dash logic
+        if (currentAbility == 1 && Keyboard.current.leftShiftKey.wasPressedThisFrame && !isDashing)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     private void FixedUpdate()
     {
+        // Stops from overriding the dash
+        if (isDashing) return;
+        
         // For acceleration/deceleration 
         float targetSpeed = horizontalInput * moveSpeed;
 
@@ -197,5 +216,23 @@ public class PlayerController : MonoBehaviour
 
         // Just checks if player is grounded
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,groundLayer);
+    }
+
+    private IEnumerator Dash()
+    {
+        isDashing = true;
+        
+        // set gravity to 0
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        
+        // actual dash logic
+        float dashDirection = spriteRenderer.flipX ? -1 : 1;
+        rb.linearVelocity = new Vector2(dashDirection * dashSpeed, 0f);
+        
+        // resets gravity to normal
+        yield return new WaitForSeconds(dashDuration);
+        rb.gravityScale = originalGravity;
+        isDashing = false;
     }
 }       
