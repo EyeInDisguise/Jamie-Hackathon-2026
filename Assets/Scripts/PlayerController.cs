@@ -59,20 +59,10 @@ public class PlayerController : MonoBehaviour
         controls.Player.Disable();
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext ctx)
-    {
-        jumpBufferCounter = jumpBufferTime;
-        if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f)
-        {
-            rb.linearVelocity = new Vector2(
-                rb.linearVelocity.x,
-                jumpForce
-            );
-
-            jumpBufferCounter = 0f;
-            coyoteTimeCounter = 0f;
-        }
-    }
+   private void OnJumpPerformed(InputAction.CallbackContext ctx)
+{
+    jumpBufferCounter = jumpBufferTime;
+}
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -86,9 +76,15 @@ public class PlayerController : MonoBehaviour
         CheckGroundStatus();
         //Debug
         //Debug.Log(isGrounded);
+        
+        // Detect when landed
+        if (isGrounded && rb.linearVelocity.y <= 0f)
+        {
+            isJumping = false;
+        }
 
         // For the coyote jump timer
-        if (isGrounded)
+        if (isGrounded && !isJumping)
         {
             coyoteTimeCounter = coyoteTime;
         }
@@ -104,13 +100,11 @@ public class PlayerController : MonoBehaviour
         }
         
         // Jump
-        if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f)
+        if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f && !isJumping)
         {
-            rb.linearVelocity = new Vector2(
-                rb.linearVelocity.x,
-                jumpForce
-            );
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
+            isJumping = true;
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
@@ -118,10 +112,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(
-            horizontalInput * moveSpeed,
-            rb.linearVelocity.y
-        );
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
     }
     
     private void CheckGroundStatus()
@@ -129,9 +120,6 @@ public class PlayerController : MonoBehaviour
         wasGrounded = isGrounded;
 
         // Just checks if player is grounded
-        isGrounded = Physics2D.OverlapCircle(
-            groundCheck.position,
-            groundCheckRadius,
-            groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,groundLayer);
     }
-}
+}       
