@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class PlayerController : MonoBehaviour
@@ -57,11 +58,16 @@ public class PlayerController : MonoBehaviour
         controls.Player.Jump.performed -= OnJumpPerformed;
         controls.Player.Disable();
     }
-    private void OnJumpPerformed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+
+    private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-        jumpBufferCounter = jumpBufferTime;
+        // if grounded, can jump
+        if (isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
     }
-    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -73,7 +79,7 @@ public class PlayerController : MonoBehaviour
         
         CheckGroundStatus();
         //Debug
-        Debug.Log(isGrounded);
+        //Debug.Log(isGrounded);
 
     }
 
