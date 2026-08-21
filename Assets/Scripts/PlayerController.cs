@@ -138,7 +138,11 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-    }
+        
+        // For animation logic
+        // For the speed, acceleration is also accounted for instead of just input cause moving direction will make it 0
+        float animationSpeed = Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(rb.linearVelocity.x) / moveSpeed);
+        animator.SetFloat("Speed", animationSpeed);    }
 
     private void FixedUpdate()
     {

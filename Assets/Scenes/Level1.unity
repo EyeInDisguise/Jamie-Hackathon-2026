@@ -166,6 +166,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1160356261127867848, guid: a7c3b3ed9c69849e0b887fbef5f9b47d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c0d0ccc0fb1b945b8a50d32ad01d4043, type: 2}
     - target: {fileID: 7878350319992209165, guid: a7c3b3ed9c69849e0b887fbef5f9b47d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.04
@@ -1025,6 +1029,7 @@ MonoBehaviour:
   fallGravityMultiplier: 2
   acceleration: 50
   deceleration: 60
+  maxFallSpeed: 20
 --- !u!4 &1491022165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: a7c3b3ed9c69849e0b887fbef5f9b47d, type: 3}
