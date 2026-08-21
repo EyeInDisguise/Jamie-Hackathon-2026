@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 60f;
     
+    [SerializeField] private float maxFallSpeed = 20f;
+    
     // Components
     private Rigidbody2D rb;
     private Animator animator;
@@ -146,6 +148,11 @@ public class PlayerController : MonoBehaviour
         { 
             rb.linearVelocity += Vector2.up * (Physics2D.gravity.y * (fallGravityMultiplier - 1f) * 
                                                Time.fixedDeltaTime);
+        }
+        // Max fall speed
+        if (rb.linearVelocity.y < -maxFallSpeed)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxFallSpeed);
         }
     }
     
