@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
+
 public class LeaderboardManager : MonoBehaviour
 {
     [SerializeField] private GameObject finishPanel;
@@ -9,6 +11,8 @@ public class LeaderboardManager : MonoBehaviour
     //Leaderboard
     [SerializeField] private TMP_Text leaderboardText;
     
+    [SerializeField] private GhostRecorder ghostRecorder;
+    [SerializeField] private GhostPlayback ghostPlayback;
     private class ScoreEntry
     {
         // gives each leaderboard entry 2 pieces of info
@@ -69,24 +73,23 @@ public class LeaderboardManager : MonoBehaviour
 
     public void SubmitScore()
     {
-        // Prevent submitting the same run multiple times
         if (scoreSubmitted) return;
 
         string playerName = nameInput.text.Trim();
 
-        // Don't allow empty names
         if (playerName.Length == 0)
         {
             Debug.Log("Enter a name first");
             return;
         }
 
+        // Check against the current #1 BEFORE inserting this score
+        bool isNewBest = scores.Count == 0 || finishedTime < scores[0].time;
+
         scores.Add(new ScoreEntry(playerName, finishedTime));
 
-        // Lowest time should be first
         scores.Sort((a, b) => a.time.CompareTo(b.time));
 
-        // Only keep the fastest 5 players
         if (scores.Count > 5)
         {
             scores.RemoveRange(5, scores.Count - 5);
@@ -95,9 +98,14 @@ public class LeaderboardManager : MonoBehaviour
         SaveLeaderboard();
         UpdateLeaderboardText();
 
-        scoreSubmitted = true;
+        // Only #1 becomes the ghost
+        if (isNewBest)
+        {
+            ghostPlayback.SaveBestGhost(ghostRecorder.Frames);
+            Debug.Log(playerName + " is the new ghost!");
+        }
 
-        Debug.Log(playerName + " submitted " + FormatTime(finishedTime));
+        scoreSubmitted = true;
     }
 
     private string FormatTime(float time)
@@ -137,4 +145,34 @@ public class LeaderboardManager : MonoBehaviour
             leaderboardText.text += $"{i + 1}. ---\n";
         }
     }
+    
+    public void ResetLeaderboard()
+    {
+        // Clear leaderboard in memory
+        scores.Clear();
+
+        // Clear saved leaderboard data
+        PlayerPrefs.DeleteKey("ScoreCount");
+
+        for (int i = 0; i < 5; i++)
+        {
+            PlayerPrefs.DeleteKey("PlayerName" + i);
+            PlayerPrefs.DeleteKey("PlayerTime" + i);
+        }
+
+        PlayerPrefs.Save();
+
+        UpdateLeaderboardText();
+
+        Debug.Log("Leaderboard reset");
+    }
+
+    void Update()
+    {
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            ResetLeaderboard();
+        }
+    }
+        
 }

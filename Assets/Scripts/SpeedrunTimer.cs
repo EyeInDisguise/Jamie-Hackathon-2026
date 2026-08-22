@@ -8,6 +8,9 @@ public class SpeedrunTimer : MonoBehaviour
     // For the Leaderboard
     [SerializeField] private LeaderboardManager leaderboardManager;
     [SerializeField] private GhostRecorder ghostRecorder;
+    [SerializeField] private GhostPlayback ghostPlayback;
+    
+    
     private float elapsedTime;
     private bool timerRunning;
 
@@ -25,7 +28,10 @@ public class SpeedrunTimer : MonoBehaviour
         elapsedTime = 0f;
         timerRunning = true;
 
-        // Start recording the player's movement
+        // Play the current #1 ghost
+        ghostPlayback.StartPlayback();
+
+        // Record the challenger
         ghostRecorder.StartRecording();
     }
 
