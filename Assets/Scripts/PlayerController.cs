@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     private bool isTouchingWall;
 
+    [Header("Wall Stuff")] 
+    [SerializeField] private float wallSlideSpeed = 1f;
+    private bool isWallSliding;
+
     
     // Components
     private Rigidbody2D rb;
@@ -166,7 +170,7 @@ public class PlayerController : MonoBehaviour
         
         // For Wall Jump
         CheckWallStatus();
-        //Debug.Log(isTouchingWall);
+        //Debug.Log("Wall: " + isTouchingWall);
 
         // For animation logic
         // For the speed, acceleration is also accounted for instead of just input cause moving direction will make it 0
@@ -196,31 +200,43 @@ public class PlayerController : MonoBehaviour
     {
         // Stops from overriding the dash
         if (isDashing) return;
-        
+
         // For acceleration/deceleration 
         float targetSpeed = horizontalInput * moveSpeed;
 
         float rate = horizontalInput != 0 ? acceleration : deceleration;
-        
+
         // Instead of straight to 0->8, goes like 0->1->2....->8
-        float newXVelocity = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, rate * 
+        float newXVelocity = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, rate *
             Time.fixedDeltaTime);
 
         rb.linearVelocity = new Vector2(newXVelocity, rb.linearVelocity.y);
-        
-        // When going down, adds faster falling gravity
-        if (rb.linearVelocity.y < 0f) 
-        { 
-            rb.linearVelocity += Vector2.up * (Physics2D.gravity.y * (fallGravityMultiplier - 1f) * 
-                                               Time.fixedDeltaTime);
-        }
-        // Max fall speed
-        if (rb.linearVelocity.y < -maxFallSpeed)
+
+        // Wall Sliding 
+        // If ability 2, and player is touching wall and is not grounded and going down then do wall slide logic
+        isWallSliding = currentAbility == 2 && isTouchingWall && !isGrounded && rb.linearVelocity.y < 0f;
+
+        if (isWallSliding)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxFallSpeed);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+        }
+        else
+        {
+            // When going down, adds faster falling gravity
+            if (rb.linearVelocity.y < 0f)
+            {
+                rb.linearVelocity +=
+                    Vector2.up * (Physics2D.gravity.y * (fallGravityMultiplier - 1f) * Time.fixedDeltaTime);
+            }
+
+            // Max fall speed
+            if (rb.linearVelocity.y < -maxFallSpeed)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxFallSpeed);
+            }
         }
     }
-    
+
     private void CheckGroundStatus()
     {
         wasGrounded = isGrounded;
@@ -277,9 +293,19 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Dashing", false);
     }
     
+    // Wall
+    private bool wallLeft;
+    private bool wallRight;
+
     private void CheckWallStatus()
     {
-        Vector2 direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+        wallLeft = Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, groundLayer);
+        wallRight = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, groundLayer);
 
-        isTouchingWall = Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundLayer);    }
+        isTouchingWall = wallLeft || wallRight;
+
+        Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
+        Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
+        Debug.Log($"Wall: {isTouchingWall}, Ability: {currentAbility}, Ground: {isGrounded}, Slide: {isWallSliding}, Y: {rb.linearVelocity.y}");
+    }
 }       
