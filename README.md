@@ -64,6 +64,27 @@ Because the ESP32 behaves like a normal keyboard, the game can also be tested wi
 - Tutorial level
 - Ability HUD
 
+## Inspiration
+How on earth did I get this idea?!??!?!
+The idea for this project came from a couple of things I had been doing and seeing recently.
+
+Not long before this hackathon, I made a 2D platformer for a game jam on itch.io where the theme was **gravity**. That got me thinking more about movement mechanics and how changing one core rule of movement can completely change how a platformer feels.
+
+Then recently I was browsing Facebook Marketplace and saw someone selling **Disney Infinity** figures.
+
+That reminded me of games where physical figures or objects interact with the game itself, and I started thinking about whether I could make something similar in a much simpler way.
+
+The basic idea became:
+
+```text
+Physical token
+    |
+    v
+RFID reader
+    |
+    v
+Ability changes in-game
+
 ## Project Structure
 
 ```text
