@@ -17,11 +17,38 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float lookAheadDistance = 1.2f;
     [SerializeField] private float lookAheadSpeed = 6f;
 
+    [Header("Camera Zoom")]
+    [SerializeField] private float zoomSpeed = 5f;
+
+    private Camera cam;
+
     private float currentLookAhead;
+
+    private float normalCameraSize;
+    private float targetCameraSize;
+
+    private void Awake()
+    {
+        cam = GetComponent<Camera>();
+
+        if (cam == null)
+        {
+            Debug.LogError("PlayerCamera needs to be on the Main Camera!");
+            return;
+        }
+
+        normalCameraSize = cam.orthographicSize;
+        targetCameraSize = normalCameraSize;
+
+        Debug.Log("Normal camera size: " + normalCameraSize);
+    }
 
     private void LateUpdate()
     {
-        if (player == null) return;
+        if (player == null || cam == null)
+        {
+            return;
+        }
 
         // Look ahead in the direction the player is moving
         float targetLookAhead = 0f;
@@ -32,19 +59,21 @@ public class PlayerCamera : MonoBehaviour
                 Mathf.Sign(playerRb.linearVelocity.x) * lookAheadDistance;
         }
 
-        // Smooth the look ahead movement
         currentLookAhead = Mathf.MoveTowards(
             currentLookAhead,
             targetLookAhead,
             lookAheadSpeed * Time.deltaTime
         );
 
-        float targetX = player.position.x + offset.x + currentLookAhead;
-        float targetY = player.position.y + offset.y;
+        float targetX =
+            player.position.x + offset.x + currentLookAhead;
+
+        float targetY =
+            player.position.y + offset.y;
 
         Vector3 newPosition = transform.position;
 
-        // Move the camera when the player leaves the horizontal dead zone
+        // Horizontal dead zone
         if (targetX > newPosition.x + horizontalDeadZone)
         {
             newPosition.x = targetX - horizontalDeadZone;
@@ -54,7 +83,7 @@ public class PlayerCamera : MonoBehaviour
             newPosition.x = targetX + horizontalDeadZone;
         }
 
-        // Move the camera when the player leaves the vertical dead zone
+        // Vertical dead zone
         if (targetY > newPosition.y + verticalDeadZone)
         {
             newPosition.y = targetY - verticalDeadZone;
@@ -64,9 +93,29 @@ public class PlayerCamera : MonoBehaviour
             newPosition.y = targetY + verticalDeadZone;
         }
 
-        // Keep the same Z position
         newPosition.z = transform.position.z;
 
         transform.position = newPosition;
+
+        // Smooth camera zoom
+        cam.orthographicSize = Mathf.MoveTowards(
+            cam.orthographicSize,
+            targetCameraSize,
+            zoomSpeed * Time.deltaTime
+        );
+    }
+
+    public void SetZoom(float newSize)
+    {
+        Debug.Log("Camera zoom requested: " + newSize);
+
+        targetCameraSize = newSize;
+    }
+
+    public void ResetZoom()
+    {
+        Debug.Log("Camera zoom reset: " + normalCameraSize);
+
+        targetCameraSize = normalCameraSize;
     }
 }
