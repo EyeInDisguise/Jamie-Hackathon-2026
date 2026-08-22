@@ -108,20 +108,22 @@ public class PlayerController : MonoBehaviour
         // if on ability 2 and is touching wall and on not on ground 
         if (currentAbility == 2 && isTouchingWall && !isGrounded)
         {
-            // if player is on a wall (left side) then move right and vice versa
-            float direction = wallLeft ? 1f : -1f;
-            rb.linearVelocity = new Vector2(direction * wallJumpHorizontalForce, wallJumpVerticalForce);
-            //Animation for wall jump
+            float horizontalDirection = wallLeft ? 1f : -1f;
+            // takes in account for flipped gravity
+            float verticalDirection = gravityFlipped ? -1f : 1f;
+
+            rb.linearVelocity = new Vector2(
+                horizontalDirection * wallJumpHorizontalForce,
+                verticalDirection * wallJumpVerticalForce
+            );
+
             animator.SetTrigger("WallJump");
-            
+
             isJumping = true;
             jumpBufferCounter = 0f;
             return;
-        }
-        
+        }   
         jumpBufferCounter = jumpBufferTime;
-        
-        
     }   
    
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
