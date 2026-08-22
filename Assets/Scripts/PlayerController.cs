@@ -238,43 +238,53 @@ public class PlayerController : MonoBehaviour
         
     }
 
+
+
+
+
+
     private void FixedUpdate()
     {
-        // Stops from overriding the dash
+        // Don't let normal movement overwrite a dash
         if (isDashing) return;
 
-        // For acceleration/deceleration 
+        // Horizontal acceleration/deceleration
         float targetSpeed = horizontalInput * moveSpeed;
-
         float rate = horizontalInput != 0 ? acceleration : deceleration;
-
-        // Instead of straight to 0->8, goes like 0->1->2....->8
-        float newXVelocity = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, rate *
-            Time.fixedDeltaTime);
+        float newXVelocity = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, rate * Time.fixedDeltaTime);
 
         rb.linearVelocity = new Vector2(newXVelocity, rb.linearVelocity.y);
 
-        // Wall Sliding 
-        // If ability 2, and player is touching wall and is not grounded and going down then do wall slide logic
-        isWallSliding = currentAbility == 2 && isTouchingWall && !isGrounded && rb.linearVelocity.y < 0f;
+        // Vertical velocity relative to current gravity direction
+        // Negative means "falling" even when upside down
+        float verticalVelocity = gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
+
+        // Wall sliding
+        isWallSliding = currentAbility == 2 && isTouchingWall && !isGrounded && verticalVelocity < 0f;
 
         if (isWallSliding)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+            float slideDirection = gravityFlipped ? 1f : -1f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, slideDirection * wallSlideSpeed);
         }
         else
         {
-            // When going down, adds faster falling gravity
-            if (rb.linearVelocity.y < 0f)
+            // Faster falling
+            if (verticalVelocity < 0f)
             {
-                rb.linearVelocity +=
-                    Vector2.up * (Physics2D.gravity.y * (fallGravityMultiplier - 1f) * Time.fixedDeltaTime);
+                float gravityDirection = gravityFlipped ? 1f : -1f;
+                rb.linearVelocity += Vector2.up * (gravityDirection * Mathf.Abs(Physics2D.gravity.y) * 
+                                                   (fallGravityMultiplier - 1f) * Time.fixedDeltaTime);
             }
 
+            // Recalculate since gravity changed  velocity 
+            verticalVelocity = gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
+
             // Max fall speed
-            if (rb.linearVelocity.y < -maxFallSpeed)
+            if (verticalVelocity < -maxFallSpeed)
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxFallSpeed);
+                float fallDirection = gravityFlipped ? 1f : -1f;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, fallDirection * maxFallSpeed);
             }
         }
     }
