@@ -4,13 +4,12 @@ using TMPro;
 public class SpeedrunTimer : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
-    
+
     // For the Leaderboard
     [SerializeField] private LeaderboardManager leaderboardManager;
     [SerializeField] private GhostRecorder ghostRecorder;
     [SerializeField] private GhostPlayback ghostPlayback;
-    
-    
+
     private float elapsedTime;
     private bool timerRunning;
 
@@ -41,6 +40,9 @@ public class SpeedrunTimer : MonoBehaviour
 
         // Stop recording when the player crosses the finish
         ghostRecorder.StopRecording();
+
+        // Play finish sound
+        AudioManager.Instance?.PlayFinish();
 
         leaderboardManager.ShowFinishScreen(elapsedTime);
     }
