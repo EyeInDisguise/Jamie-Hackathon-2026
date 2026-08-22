@@ -5,68 +5,73 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Visual")]
-    [SerializeField] private Transform visual;
+    [Header("Visual")] [SerializeField] private Transform visual;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform visualPivot;
-    
-    [Header("Movement Stuff")]
-    [SerializeField] private float moveSpeed = 8f;
+
+    [Header("Movement Stuff")] [SerializeField]
+    private float moveSpeed = 8f;
+
     [SerializeField] private float jumpForce = 16f;
-    
-    [Header("Jump Stuff")]
-    [SerializeField] private float coyoteTime = 0.15f;
+
+    [Header("Jump Stuff")] [SerializeField]
+    private float coyoteTime = 0.15f;
+
     [SerializeField] private float jumpBufferTime = 0.2f;
-    
-    [Header("Ground Detection")]
-    [SerializeField] private Transform groundCheck;
+
+    [Header("Ground Detection")] [SerializeField]
+    private Transform groundCheck;
+
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float groundCheckRadius = 0.2f;
-    
-    [Header("Gravity")]
-    [SerializeField] private float fallGravityMultiplier = 2f;
-    
-    [Header("Ac/De-eleration")]
-    [SerializeField] private float acceleration = 50f;
+    [SerializeField] private float groundCheckRadius = 0.05f;
+
+    [Header("Gravity")] [SerializeField] private float fallGravityMultiplier = 2f;
+
+    [Header("Ac/De-eleration")] [SerializeField]
+    private float acceleration = 50f;
+
     [SerializeField] private float deceleration = 60f;
-    
-    [Header("FallSpeed")]
-    [SerializeField] private float maxFallSpeed = 20f;
-    
-    [Header("Dashing Stuff")]
-    [SerializeField] private float dashSpeed = 20f;
+
+    [Header("FallSpeed")] [SerializeField] private float maxFallSpeed = 20f;
+
+    [Header("Dashing Stuff")] [SerializeField]
+    private float dashSpeed = 20f;
+
     [SerializeField] private float dashDuration = 0.2f;
     private bool isDashing;
     private bool canDash = true;
-    
-    [Header("Wall Detection")]
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallCheckDistance = 0.5f;
+
+    [Header("Wall Detection")] [SerializeField]
+    private Transform wallCheck;
+
+    [SerializeField] private float wallCheckDistance = 0.1f;
     [SerializeField] private LayerMask wallLayer;
     private bool isTouchingWall;
 
-    [Header("Wall Slide")] 
-    [SerializeField] private float wallSlideSpeed = 1f;
+    [Header("Wall Slide")] [SerializeField]
+    private float wallSlideSpeed = 1f;
+
     private bool isWallSliding;
 
-    [Header("Wall Jump")] 
-    [SerializeField] private float wallJumpHorizontalForce = 10f;
+    [Header("Wall Jump")] [SerializeField] private float wallJumpHorizontalForce = 10f;
     [SerializeField] private float wallJumpVerticalForce = 16f;
-    
-    [Header("Gravity Stuff")] 
-    [SerializeField] private Transform ceilingCheck;
+
+    [Header("Gravity Stuff")] [SerializeField]
+    private Transform ceilingCheck;
+
     private bool gravityFlipped;
-    
-    [Header("Time Stop")]
-    [SerializeField] private float timeStopDuration = 3f;
+
+    [Header("Time Stop")] [SerializeField] private float timeStopDuration = 3f;
+
     private bool isTimeStopped;
+
     // Other scripts can check if time has stopped
     public bool IsTimeStopped => isTimeStopped;
-    
+
     // Components
     private Rigidbody2D rb;
-    
+
     // Input System
     private PlayerControls controls;
 
@@ -81,17 +86,17 @@ public class PlayerController : MonoBehaviour
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
     private bool isJumping;
-    
+
     // Stores current ability
     private int currentAbility = 0;
-    
+
     private void Awake()
     {
         // Initialises all the components
         rb = GetComponent<Rigidbody2D>();
         controls = new PlayerControls();
     }
-    
+
     private void OnEnable()
     {
         controls.Player.Enable();
@@ -108,7 +113,7 @@ public class PlayerController : MonoBehaviour
         controls.Player.Disable();
     }
 
-   private void OnJumpPerformed(InputAction.CallbackContext ctx)
+    private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
         // For Ability 2 Wall Jumps
         // if on ability 2 and is touching wall and on not on ground 
@@ -128,10 +133,11 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
             jumpBufferCounter = 0f;
             return;
-        }   
+        }
+
         jumpBufferCounter = jumpBufferTime;
-    }   
-   
+    }
+
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
     {
         float verticalVelocity = gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
@@ -141,33 +147,35 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
     }
-/// <summary>
-/// ////////////////////////////////////////////////////////////////////checkmark for Update() function (easier to access)
-/// </summary>
+
+    /// <summary>
+    /// ////////////////////////////////////////////////////////////////////checkmark for Update() function (easier to access)
+    /// </summary>
     void Update()
     {
         horizontalInput = controls.Player.Move.ReadValue<float>();
-        
+
         CheckGroundStatus();
         //Debug.Log(isGrounded);
-        
+
         // To check if player just landed on the ground (animation)
         if (!wasGrounded && isGrounded)
         {
             animator.SetTrigger("Land");
         }
-        
+
         // Gravity Jump,
         float verticalVelocity = gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
-        
+
         // Reset canDash
         if (isGrounded)
         {
             canDash = true;
         }
-        
+
         // Detect when landed
-        if (isGrounded && verticalVelocity <= 0f)        {
+        if (isGrounded && verticalVelocity <= 0f)
+        {
             isJumping = false;
         }
 
@@ -180,25 +188,25 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
-        
+
         // Timer for jump buffer
         if (jumpBufferCounter > 0f)
         {
             jumpBufferCounter -= Time.deltaTime;
         }
-        
+
         // Jump
         if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f && !isJumping)
         {
             // Jumping from ceiling pushes player away
             float jumpDirection = gravityFlipped ? -1f : 1f;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpDirection);
-            
+
             isJumping = true;
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
-        
+
         // Flip the player depending on direction
         // Also accounts for when flipped due to gravity ability
         if (horizontalInput > 0f)
@@ -209,7 +217,7 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.flipX = !gravityFlipped;
         }
-        
+
         // For Wall Jump
         CheckWallStatus();
         //Debug.Log("Wall: " + isTouchingWall);
@@ -217,39 +225,39 @@ public class PlayerController : MonoBehaviour
         // For animation logic
         // For the speed, acceleration is also accounted for instead of just input cause moving direction will make it 0
         float animationSpeed = Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(rb.linearVelocity.x) / moveSpeed);
-        animator.SetFloat("Speed", animationSpeed);   
-        
+        animator.SetFloat("Speed", animationSpeed);
+
         animator.SetBool("Jumping", isJumping);
         animator.SetFloat("VelocityY", verticalVelocity); // for gravity jump as well
         animator.SetBool("Grounded", isGrounded);
         animator.SetBool("WallSliding", isWallSliding);
-        
+
         // Abilities
         if (Keyboard.current.digit1Key.wasPressedThisFrame) currentAbility = 1;
         if (Keyboard.current.digit2Key.wasPressedThisFrame) currentAbility = 2;
         if (Keyboard.current.digit3Key.wasPressedThisFrame) currentAbility = 3;
         if (Keyboard.current.digit4Key.wasPressedThisFrame) currentAbility = 4;
         //Debug.Log("Ability: " + currentAbility);
-        
+
         // Dashing
         // If 1 (dash) is stored and dash is pressed (shift), then do dash logic
         if (currentAbility == 1 && Keyboard.current.leftShiftKey.wasPressedThisFrame && canDash && !isDashing)
         {
             StartCoroutine(Dash());
         }
-        
+
         // Gravity Ability
         if (currentAbility == 3 && Keyboard.current.leftShiftKey.wasPressedThisFrame)
         {
             FlipGravity();
         }
-        
+
         // Time Stop Ability
         if (currentAbility == 4 && Keyboard.current.leftShiftKey.wasPressedThisFrame && !isTimeStopped)
         {
             StartCoroutine(TimeStop());
         }
-        
+
     }
 
     private void FixedUpdate()
@@ -282,7 +290,7 @@ public class PlayerController : MonoBehaviour
             if (verticalVelocity < 0f)
             {
                 float gravityDirection = gravityFlipped ? 1f : -1f;
-                rb.linearVelocity += Vector2.up * (gravityDirection * Mathf.Abs(Physics2D.gravity.y) * 
+                rb.linearVelocity += Vector2.up * (gravityDirection * Mathf.Abs(Physics2D.gravity.y) *
                                                    (fallGravityMultiplier - 1f) * Time.fixedDeltaTime);
             }
 
@@ -314,7 +322,7 @@ public class PlayerController : MonoBehaviour
         // set gravity to 0
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        
+
         // actual dash logic 
         // Calculate direction
         Vector2 dashDirection = controls.Player.DashDirection.ReadValue<Vector2>();
@@ -323,12 +331,13 @@ public class PlayerController : MonoBehaviour
         {
             dashDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
         }
+
         // Normalize makes diagonal faster cause like a triangle (side is longer on angle), makes it all same
         dashDirection.Normalize();
-        
+
         // Actual dash movement
         rb.linearVelocity = dashDirection * dashSpeed;
-    
+
         // Sideway dash for animator logic (don't play animation if dashing up or down)
         bool sidewaysDash = Mathf.Abs(dashDirection.x) > 0.1f;
 
@@ -345,7 +354,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.Play("JumpFall", 0, 0f);
         }
-        
+
         // resets gravity to normal
         yield return new WaitForSeconds(dashDuration);
         rb.gravityScale = originalGravity;
@@ -353,7 +362,7 @@ public class PlayerController : MonoBehaviour
         // For animator
         animator.SetBool("Dashing", false);
     }
-    
+
     // Wall
     private bool wallLeft;
     private bool wallRight;
@@ -365,29 +374,30 @@ public class PlayerController : MonoBehaviour
 
         isTouchingWall = wallLeft || wallRight;
 
-        //Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
-        //Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
+        Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
+        Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
         //Debug.Log($"Wall: {isTouchingWall}, Ability: {currentAbility}, Ground: {isGrounded}, Slide:" +
-                 // $" {isWallSliding}, Y: {rb.linearVelocity.y}");
+        // $" {isWallSliding}, Y: {rb.linearVelocity.y}");
     }
-    
+
     // Gravity Ability
     private void FlipGravity()
     {
-        gravityFlipped = !gravityFlipped; rb.gravityScale *= -1f;
+        gravityFlipped = !gravityFlipped;
+        rb.gravityScale *= -1f;
 
         visualPivot.localRotation = gravityFlipped ? Quaternion.Euler(0f, 0f, 180f) : Quaternion.identity;
     }
-    
+
     // Time Stop Ability
     private IEnumerator TimeStop()
     {
         isTimeStopped = true;
-        Debug.Log("TIME STOP");
+        //Debug.Log("TIME STOP");
 
         yield return new WaitForSeconds(timeStopDuration);
 
         isTimeStopped = false;
-        Debug.Log("TIME RESUME");
+        //Debug.Log("TIME RESUME");
     }
-}       
+}
