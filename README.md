@@ -15,11 +15,11 @@ The player can switch between four movement abilities by scanning physical RFID 
 
 The RFID tags store one of these 16-byte strings:
 
-"```text
+text
 dash000000000000
 wall000000000000
 gravity000000000
-time000000000000"
+time000000000000
 
 ## How It Works
 RFID tag
@@ -81,7 +81,7 @@ NimBLE-Arduino
 Callback
 Arduino_MFRC522v2
 
-Build
+### Build
 
 From the RFIDReader directory:
 
@@ -91,10 +91,10 @@ pio run -t upload
 Serial Monitor
 pio device monitor
 
-The serial monitor runs at:
+### The serial monitor runs at:
 
 115200 baud
-Unity Input
+### Unity Input
 
 The RFID reader behaves as a Bluetooth keyboard.
 
@@ -135,7 +135,8 @@ Time Trial
 https://www.youtube.com/watch?v=GkAQh2QzdJA
 
 In General
-This guys is the goat
+This guy is the goat
+
 https://www.youtube.com/@Tarodev 
 
 
