@@ -7,7 +7,7 @@ public class SpeedrunTimer : MonoBehaviour
     
     // For the Leaderboard
     [SerializeField] private LeaderboardManager leaderboardManager;
-
+    [SerializeField] private GhostRecorder ghostRecorder;
     private float elapsedTime;
     private bool timerRunning;
 
@@ -22,18 +22,20 @@ public class SpeedrunTimer : MonoBehaviour
 
     public void StartTimer()
     {
-        // Reset the run and begin counting
         elapsedTime = 0f;
         timerRunning = true;
 
-        //Debug.Log("SpeedrunTimer successfully started");
+        // Start recording the player's movement
+        ghostRecorder.StartRecording();
     }
 
     public void StopTimer()
     {
         timerRunning = false;
-        
-        // Show the name-entry screen after finishing
+
+        // Stop recording when the player crosses the finish
+        ghostRecorder.StopRecording();
+
         leaderboardManager.ShowFinishScreen(elapsedTime);
     }
 

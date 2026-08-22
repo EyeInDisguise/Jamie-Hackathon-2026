@@ -1527,6 +1527,7 @@ GameObject:
   - component: {fileID: 743393101}
   - component: {fileID: 743393100}
   - component: {fileID: 743393102}
+  - component: {fileID: 743393103}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1548,6 +1549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpeedrunTimer
   timerText: {fileID: 1831674758}
   leaderboardManager: {fileID: 743393102}
+  ghostRecorder: {fileID: 0}
 --- !u!4 &743393101
 Transform:
   m_ObjectHideFlags: 0
@@ -1578,6 +1580,20 @@ MonoBehaviour:
   finishPanel: {fileID: 1348291030}
   finalTimeText: {fileID: 2063250466}
   nameInput: {fileID: 1158349293}
+  leaderboardText: {fileID: 2079501536}
+--- !u!114 &743393103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743393099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f8be65b87a9749e98159ce6b346abb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostRecorder
+  player: {fileID: 1491022165}
 --- !u!1 &826462688
 GameObject:
   m_ObjectHideFlags: 0
