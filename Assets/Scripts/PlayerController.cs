@@ -5,6 +5,12 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Visual")]
+    [SerializeField] private Transform visual;
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform visualPivot;
+    
     [Header("Movement Stuff")]
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpForce = 16f;
@@ -48,13 +54,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float wallJumpHorizontalForce = 10f;
     [SerializeField] private float wallJumpVerticalForce = 16f;
     
-    // Gravity
+    [Header("Gravity Stuff")] 
+    [SerializeField] private Transform ceilingCheck;
     private bool gravityFlipped;
     
     // Components
     private Rigidbody2D rb;
-    private Animator animator;
-    private SpriteRenderer spriteRenderer;
     
     // Input System
     private PlayerControls controls;
@@ -78,9 +83,6 @@ public class PlayerController : MonoBehaviour
     {
         // Initialises all the components
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        
         controls = new PlayerControls();
     }
     
@@ -124,9 +126,11 @@ public class PlayerController : MonoBehaviour
    
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
     {
-        if (rb.linearVelocity.y > 0f) // off ground and going up instead of when going down.
+        float verticalVelocity = gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
+
+        if (verticalVelocity > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f); // 0.5f is for grav
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
     }
 /// <summary>
@@ -145,6 +149,9 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Land");
         }
         
+        // Gravity Jump,
+        float verticalVelocity = gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
+        
         // Reset canDash
         if (isGrounded)
         {
@@ -152,8 +159,7 @@ public class PlayerController : MonoBehaviour
         }
         
         // Detect when landed
-        if (isGrounded && rb.linearVelocity.y <= 0f)
-        {
+        if (isGrounded && verticalVelocity <= 0f)        {
             isJumping = false;
         }
 
@@ -176,21 +182,24 @@ public class PlayerController : MonoBehaviour
         // Jump
         if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f && !isJumping)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-
+            // Jumping from ceiling pushes player away
+            float jumpDirection = gravityFlipped ? -1f : 1f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * jumpDirection);
+            
             isJumping = true;
             jumpBufferCounter = 0f;
             coyoteTimeCounter = 0f;
         }
         
         // Flip the player depending on direction
+        // Also accounts for when flipped due to gravity ability
         if (horizontalInput > 0f)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = gravityFlipped;
         }
         else if (horizontalInput < 0f)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = !gravityFlipped;
         }
         
         // For Wall Jump
@@ -203,7 +212,7 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", animationSpeed);   
         
         animator.SetBool("Jumping", isJumping);
-        animator.SetFloat("VelocityY", rb.linearVelocity.y);
+        animator.SetFloat("VelocityY", verticalVelocity); // for gravity jump as well
         animator.SetBool("Grounded", isGrounded);
         animator.SetBool("WallSliding", isWallSliding);
         
@@ -273,9 +282,9 @@ public class PlayerController : MonoBehaviour
     private void CheckGroundStatus()
     {
         wasGrounded = isGrounded;
-
-        // Just checks if player is grounded
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,groundLayer);
+        // If gravity ability is true, then do ceilingCheck else, ground check
+        Transform activeCheck = gravityFlipped ? ceilingCheck : groundCheck;
+        isGrounded = Physics2D.OverlapCircle(activeCheck.position, groundCheckRadius, groundLayer);
     }
 
     private IEnumerator Dash()
@@ -346,11 +355,8 @@ public class PlayerController : MonoBehaviour
     // Gravity Ability
     private void FlipGravity()
     {
-        gravityFlipped = !gravityFlipped;
+        gravityFlipped = !gravityFlipped; rb.gravityScale *= -1f;
 
-        // Just flips gravity
-        rb.gravityScale *= -1f;
-        // Also flips the sprite 
-        spriteRenderer.flipY = gravityFlipped;
+        visualPivot.localRotation = gravityFlipped ? Quaternion.Euler(0f, 0f, 180f) : Quaternion.identity;
     }
 }       
