@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashDuration = 0.2f;
     private bool isDashing;
+    private bool canDash = true;
 
     
     // Components
@@ -115,6 +116,12 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Land");
         }
         
+        // Reset canDash
+        if (isGrounded)
+        {
+            canDash = true;
+        }
+        
         // Detect when landed
         if (isGrounded && rb.linearVelocity.y <= 0f)
         {
@@ -166,6 +173,8 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("VelocityY", rb.linearVelocity.y);
         animator.SetBool("Grounded", isGrounded);
         
+        animator.SetBool("Dashing", isDashing);
+        
         // Abilities
         if (Keyboard.current.digit1Key.wasPressedThisFrame) currentAbility = 1;
         if (Keyboard.current.digit2Key.wasPressedThisFrame) currentAbility = 2;
@@ -175,7 +184,7 @@ public class PlayerController : MonoBehaviour
         
         // Dashing
         // If 1 (dash) is stored and dash is pressed (shift), then do dash logic
-        if (currentAbility == 1 && Keyboard.current.leftShiftKey.wasPressedThisFrame && !isDashing)
+        if (currentAbility == 1 && Keyboard.current.leftShiftKey.wasPressedThisFrame && canDash && !isDashing)
         {
             StartCoroutine(Dash());
         }
@@ -220,8 +229,9 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        // Initialise 
+        canDash = false;
         isDashing = true;
-        
         // set gravity to 0
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
