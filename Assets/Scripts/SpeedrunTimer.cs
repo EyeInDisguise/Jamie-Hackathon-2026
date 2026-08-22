@@ -4,6 +4,9 @@ using TMPro;
 public class SpeedrunTimer : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
+    
+    // For the Leaderboard
+    [SerializeField] private LeaderboardManager leaderboardManager;
 
     private float elapsedTime;
     private bool timerRunning;
@@ -23,12 +26,15 @@ public class SpeedrunTimer : MonoBehaviour
         elapsedTime = 0f;
         timerRunning = true;
 
-        Debug.Log("SpeedrunTimer successfully started");
+        //Debug.Log("SpeedrunTimer successfully started");
     }
 
     public void StopTimer()
     {
         timerRunning = false;
+        
+        // Show the name-entry screen after finishing
+        leaderboardManager.ShowFinishScreen(elapsedTime);
     }
 
     private void UpdateTimerUI()

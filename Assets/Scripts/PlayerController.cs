@@ -16,9 +16,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 16f;
 
     [Header("Jump Stuff")] [SerializeField]
-    private float coyoteTime = 0.15f;
+    private float coyoteTime = 0.08f;
 
-    [SerializeField] private float jumpBufferTime = 0.2f;
+    [SerializeField] private float jumpBufferTime = 0.1f;
 
     [Header("Ground Detection")] [SerializeField]
     private Transform groundCheck;
