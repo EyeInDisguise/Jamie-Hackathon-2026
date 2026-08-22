@@ -48,8 +48,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float wallJumpHorizontalForce = 10f;
     [SerializeField] private float wallJumpVerticalForce = 16f;
     
-    
-
+    // Gravity
+    private bool gravityFlipped;
     
     // Components
     private Rigidbody2D rb;
@@ -129,7 +129,9 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f); // 0.5f is for grav
         }
     }
-
+/// <summary>
+/// ////////////////////////////////////////////////////////////////////checkmark for Update() function (easier to access)
+/// </summary>
     void Update()
     {
         horizontalInput = controls.Player.Move.ReadValue<float>();
@@ -218,6 +220,13 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+        
+        // Gravity Ability
+        if (currentAbility == 3 && Keyboard.current.leftShiftKey.wasPressedThisFrame)
+        {
+            FlipGravity();
+        }
+        
     }
 
     private void FixedUpdate()
@@ -332,5 +341,16 @@ public class PlayerController : MonoBehaviour
         //Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
         //Debug.Log($"Wall: {isTouchingWall}, Ability: {currentAbility}, Ground: {isGrounded}, Slide:" +
                  // $" {isWallSliding}, Y: {rb.linearVelocity.y}");
+    }
+    
+    // Gravity Ability
+    private void FlipGravity()
+    {
+        gravityFlipped = !gravityFlipped;
+
+        // Just flips gravity
+        rb.gravityScale *= -1f;
+        // Also flips the sprite 
+        spriteRenderer.flipY = gravityFlipped;
     }
 }       
