@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform ceilingCheck;
     private bool gravityFlipped;
     
+    [Header("Time Stop")]
+    [SerializeField] private float timeStopDuration = 3f;
+    private bool isTimeStopped;
+    
     // Components
     private Rigidbody2D rb;
     
@@ -238,12 +242,13 @@ public class PlayerController : MonoBehaviour
             FlipGravity();
         }
         
+        // Time Stop Ability
+        if (currentAbility == 4 && Keyboard.current.leftShiftKey.wasPressedThisFrame && !isTimeStopped)
+        {
+            StartCoroutine(TimeStop());
+        }
+        
     }
-
-
-
-
-
 
     private void FixedUpdate()
     {
@@ -370,5 +375,17 @@ public class PlayerController : MonoBehaviour
         gravityFlipped = !gravityFlipped; rb.gravityScale *= -1f;
 
         visualPivot.localRotation = gravityFlipped ? Quaternion.Euler(0f, 0f, 180f) : Quaternion.identity;
+    }
+    
+    // Time Stop Ability
+    private IEnumerator TimeStop()
+    {
+        isTimeStopped = true;
+        Debug.Log("TIME STOP");
+
+        yield return new WaitForSeconds(timeStopDuration);
+
+        isTimeStopped = false;
+        Debug.Log("TIME RESUME");
     }
 }       
