@@ -19,8 +19,11 @@ public class SpeedrunTimer : MonoBehaviour
 
     public void StartTimer()
     {
+        // Reset the run and begin counting
         elapsedTime = 0f;
         timerRunning = true;
+
+        Debug.Log("SpeedrunTimer successfully started");
     }
 
     public void StopTimer()

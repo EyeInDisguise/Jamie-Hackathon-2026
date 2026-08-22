@@ -374,8 +374,8 @@ public class PlayerController : MonoBehaviour
 
         isTouchingWall = wallLeft || wallRight;
 
-        Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
-        Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
+        //Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
+        //Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
         //Debug.Log($"Wall: {isTouchingWall}, Ability: {currentAbility}, Ground: {isGrounded}, Slide:" +
         // $" {isWallSliding}, Y: {rb.linearVelocity.y}");
     }

@@ -7,22 +7,19 @@ public class RaceTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Something entered: " + other.name);
+        // Ignore everything except the Player
+        if (!other.CompareTag("Player")) return;
 
-        if (!other.CompareTag("Player"))
-        {
-            Debug.Log("Not tagged Player");
-            return;
-        }
-
-        Debug.Log("Player entered trigger");
+        Debug.Log("Player entered race trigger");
 
         if (startsRace)
         {
+            Debug.Log("Starting timer");
             timer.StartTimer();
         }
         else
         {
+            Debug.Log("Stopping timer");
             timer.StopTimer();
         }
     }
