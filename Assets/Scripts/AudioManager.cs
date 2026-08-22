@@ -22,12 +22,16 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip gravityFlipSound;
     [SerializeField] private AudioClip timeStopSound;
 
+    [Header("UI")]
+    [SerializeField] private AudioClip buttonHoverSound;
+    [SerializeField] private AudioClip buttonClickSound;
+
     [Header("Game")]
     [SerializeField] private AudioClip finishSound;
 
     private void Awake()
     {
-        // Keep only one AudioManager between scenes
+        // Only keep one AudioManager between scenes
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -35,28 +39,46 @@ public class AudioManager : MonoBehaviour
         }
 
         Instance = this;
-
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        if (backgroundMusic != null && musicSource != null)
-        {
-            musicSource.clip = backgroundMusic;
-            musicSource.loop = true;
+        Debug.Log("AudioManager started");
 
-            if (!musicSource.isPlaying)
-            {
-                musicSource.Play();
-            }
+        if (musicSource == null)
+        {
+            Debug.LogWarning("MusicSource is not assigned!");
+            return;
         }
+
+        if (backgroundMusic == null)
+        {
+            Debug.LogWarning("Background music is not assigned!");
+            return;
+        }
+
+        musicSource.clip = backgroundMusic;
+        musicSource.loop = true;
+
+        Debug.Log("Starting music: " + backgroundMusic.name);
+
+        musicSource.Play();
+
+        Debug.Log("Music isPlaying: " + musicSource.isPlaying);
     }
 
     private void PlaySound(AudioClip clip)
     {
-        if (clip == null || sfxSource == null)
+        if (sfxSource == null)
         {
+            Debug.LogWarning("SFXSource is not assigned!");
+            return;
+        }
+
+        if (clip == null)
+        {
+            Debug.LogWarning("Tried to play a sound, but no AudioClip was assigned.");
             return;
         }
 
@@ -96,6 +118,16 @@ public class AudioManager : MonoBehaviour
     public void PlayTimeStop()
     {
         PlaySound(timeStopSound);
+    }
+
+    public void PlayButtonHover()
+    {
+        PlaySound(buttonHoverSound);
+    }
+
+    public void PlayButtonClick()
+    {
+        PlaySound(buttonClickSound);
     }
 
     public void PlayFinish()
