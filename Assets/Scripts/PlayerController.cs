@@ -173,8 +173,6 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("VelocityY", rb.linearVelocity.y);
         animator.SetBool("Grounded", isGrounded);
         
-        animator.SetBool("Dashing", isDashing);
-        
         // Abilities
         if (Keyboard.current.digit1Key.wasPressedThisFrame) currentAbility = 1;
         if (Keyboard.current.digit2Key.wasPressedThisFrame) currentAbility = 2;
@@ -237,6 +235,7 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         
         // actual dash logic 
+        // Calculate direction
         Vector2 dashDirection = controls.Player.DashDirection.ReadValue<Vector2>();
 
         if (dashDirection == Vector2.zero)
@@ -245,11 +244,32 @@ public class PlayerController : MonoBehaviour
         }
         // Normalize makes diagonal faster cause like a triangle (side is longer on angle), makes it all same
         dashDirection.Normalize();
+        
+        // Actual dash movement
         rb.linearVelocity = dashDirection * dashSpeed;
+    
+        // Sideway dash for animator logic (don't play animation if dashing up or down)
+        bool sidewaysDash = Mathf.Abs(dashDirection.x) > 0.1f;
+
+        // For the animations, dashing upwards plays jump rise, dash down plays jump fall, else play dash
+        if (sidewaysDash)
+        {
+            animator.Play("Dash", 0, 0f);
+        }
+        else if (dashDirection.y > 0f)
+        {
+            animator.Play("JumpRise", 0, 0f);
+        }
+        else if (dashDirection.y < 0f)
+        {
+            animator.Play("JumpFall", 0, 0f);
+        }
         
         // resets gravity to normal
         yield return new WaitForSeconds(dashDuration);
         rb.gravityScale = originalGravity;
         isDashing = false;
+        // For animator
+        animator.SetBool("Dashing", false);
     }
 }       
