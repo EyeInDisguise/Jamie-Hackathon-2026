@@ -61,6 +61,8 @@ public class PlayerController : MonoBehaviour
     [Header("Time Stop")]
     [SerializeField] private float timeStopDuration = 3f;
     private bool isTimeStopped;
+    // Other scripts can check if time has stopped
+    public bool IsTimeStopped => isTimeStopped;
     
     // Components
     private Rigidbody2D rb;
