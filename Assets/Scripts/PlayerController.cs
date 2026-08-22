@@ -109,13 +109,17 @@ public class PlayerController : MonoBehaviour
             // if player is on a wall (left side) then move right and vice versa
             float direction = wallLeft ? 1f : -1f;
             rb.linearVelocity = new Vector2(direction * wallJumpHorizontalForce, wallJumpVerticalForce);
-
+            //Animation for wall jump
+            animator.SetTrigger("WallJump");
+            
             isJumping = true;
             jumpBufferCounter = 0f;
             return;
         }
         
         jumpBufferCounter = jumpBufferTime;
+        
+        
     }   
    
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
@@ -199,6 +203,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Jumping", isJumping);
         animator.SetFloat("VelocityY", rb.linearVelocity.y);
         animator.SetBool("Grounded", isGrounded);
+        animator.SetBool("WallSliding", isWallSliding);
         
         // Abilities
         if (Keyboard.current.digit1Key.wasPressedThisFrame) currentAbility = 1;
