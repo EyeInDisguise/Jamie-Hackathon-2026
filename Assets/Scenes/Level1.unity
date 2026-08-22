@@ -361,7 +361,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.40400004, y: 0.689, z: -4.121}
+  m_LocalPosition: {x: -0.40400004, y: 0.69, z: -8.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1030,6 +1030,8 @@ MonoBehaviour:
   acceleration: 50
   deceleration: 60
   maxFallSpeed: 20
+  dashSpeed: 20
+  dashDuration: 0.2
 --- !u!4 &1491022165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: a7c3b3ed9c69849e0b887fbef5f9b47d, type: 3}

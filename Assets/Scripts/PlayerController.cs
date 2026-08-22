@@ -226,9 +226,16 @@ public class PlayerController : MonoBehaviour
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         
-        // actual dash logic
-        float dashDirection = spriteRenderer.flipX ? -1 : 1;
-        rb.linearVelocity = new Vector2(dashDirection * dashSpeed, 0f);
+        // actual dash logic 
+        Vector2 dashDirection = controls.Player.DashDirection.ReadValue<Vector2>();
+
+        if (dashDirection == Vector2.zero)
+        {
+            dashDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+        }
+        // Normalize makes diagonal faster cause like a triangle (side is longer on angle), makes it all same
+        dashDirection.Normalize();
+        rb.linearVelocity = dashDirection * dashSpeed;
         
         // resets gravity to normal
         yield return new WaitForSeconds(dashDuration);
