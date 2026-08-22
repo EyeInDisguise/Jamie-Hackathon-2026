@@ -1208,6 +1208,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   wallSlideSpeed: 1
+  wallJumpHorizontalForce: 10
+  wallJumpVerticalForce: 17
 --- !u!4 &1491022165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: a7c3b3ed9c69849e0b887fbef5f9b47d, type: 3}

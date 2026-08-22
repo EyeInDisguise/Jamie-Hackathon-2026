@@ -40,9 +40,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     private bool isTouchingWall;
 
-    [Header("Wall Stuff")] 
+    [Header("Wall Slide")] 
     [SerializeField] private float wallSlideSpeed = 1f;
     private bool isWallSliding;
+
+    [Header("Wall Jump")] 
+    [SerializeField] private float wallJumpHorizontalForce = 10f;
+    [SerializeField] private float wallJumpVerticalForce = 16f;
+    
+    
 
     
     // Components
@@ -96,7 +102,20 @@ public class PlayerController : MonoBehaviour
 
    private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-    jumpBufferCounter = jumpBufferTime;
+        // For Ability 2 Wall Jumps
+        // if on ability 2 and is touching wall and on not on ground 
+        if (currentAbility == 2 && isTouchingWall && !isGrounded)
+        {
+            // if player is on a wall (left side) then move right and vice versa
+            float direction = wallLeft ? 1f : -1f;
+            rb.linearVelocity = new Vector2(direction * wallJumpHorizontalForce, wallJumpVerticalForce);
+
+            isJumping = true;
+            jumpBufferCounter = 0f;
+            return;
+        }
+        
+        jumpBufferCounter = jumpBufferTime;
     }   
    
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
@@ -304,8 +323,9 @@ public class PlayerController : MonoBehaviour
 
         isTouchingWall = wallLeft || wallRight;
 
-        Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
-        Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
-        Debug.Log($"Wall: {isTouchingWall}, Ability: {currentAbility}, Ground: {isGrounded}, Slide: {isWallSliding}, Y: {rb.linearVelocity.y}");
+        //Debug.DrawRay(wallCheck.position, Vector2.left * wallCheckDistance, Color.red);
+        //Debug.DrawRay(wallCheck.position, Vector2.right * wallCheckDistance, Color.red);
+        //Debug.Log($"Wall: {isTouchingWall}, Ability: {currentAbility}, Ground: {isGrounded}, Slide:" +
+                 // $" {isWallSliding}, Y: {rb.linearVelocity.y}");
     }
 }       
