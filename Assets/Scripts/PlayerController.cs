@@ -62,9 +62,13 @@ public class PlayerController : MonoBehaviour
 
     private bool gravityFlipped;
 
-    [Header("Time Stop")] [SerializeField] private float timeStopDuration = 3f;
-
+    [Header("Time Stop")] 
+    [SerializeField] private float timeStopDuration = 3f;
     private bool isTimeStopped;
+    
+    [Header("Ability UI")]
+    [SerializeField] private AbilityUI abilityUI;
+    
 
     // Other scripts can check if time has stopped
     public bool IsTimeStopped => isTimeStopped;
@@ -233,10 +237,10 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("WallSliding", isWallSliding);
 
         // Abilities
-        if (Keyboard.current.digit1Key.wasPressedThisFrame) currentAbility = 1;
-        if (Keyboard.current.digit2Key.wasPressedThisFrame) currentAbility = 2;
-        if (Keyboard.current.digit3Key.wasPressedThisFrame) currentAbility = 3;
-        if (Keyboard.current.digit4Key.wasPressedThisFrame) currentAbility = 4;
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) SetAbility(1);
+        if (Keyboard.current.digit2Key.wasPressedThisFrame) SetAbility(2);
+        if (Keyboard.current.digit3Key.wasPressedThisFrame) SetAbility(3);
+        if (Keyboard.current.digit4Key.wasPressedThisFrame) SetAbility(4);
         //Debug.Log("Ability: " + currentAbility);
 
         // Dashing
@@ -399,5 +403,13 @@ public class PlayerController : MonoBehaviour
 
         isTimeStopped = false;
         //Debug.Log("TIME RESUME");
+    }
+    
+    private void SetAbility(int ability)
+    {
+        currentAbility = ability;
+
+        // Update the HUD
+        abilityUI.SetAbility(currentAbility);
     }
 }
