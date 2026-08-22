@@ -33,6 +33,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f;
     private bool isDashing;
     private bool canDash = true;
+    
+    [Header("Wall Detection")]
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallCheckDistance = 0.5f;
+    [SerializeField] private LayerMask wallLayer;
+    private bool isTouchingWall;
 
     
     // Components
@@ -97,17 +103,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
-
     void Update()
     {
         horizontalInput = controls.Player.Move.ReadValue<float>();
         
         CheckGroundStatus();
-        //Debug
         //Debug.Log(isGrounded);
         
         // To check if player just landed on the ground (animation)
@@ -164,6 +164,10 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = true;
         }
         
+        // For Wall Jump
+        CheckWallStatus();
+        //Debug.Log(isTouchingWall);
+
         // For animation logic
         // For the speed, acceleration is also accounted for instead of just input cause moving direction will make it 0
         float animationSpeed = Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(rb.linearVelocity.x) / moveSpeed);
@@ -178,7 +182,7 @@ public class PlayerController : MonoBehaviour
         if (Keyboard.current.digit2Key.wasPressedThisFrame) currentAbility = 2;
         if (Keyboard.current.digit3Key.wasPressedThisFrame) currentAbility = 3;
         if (Keyboard.current.digit4Key.wasPressedThisFrame) currentAbility = 4;
-        Debug.Log("Ability: " + currentAbility);
+        //Debug.Log("Ability: " + currentAbility);
         
         // Dashing
         // If 1 (dash) is stored and dash is pressed (shift), then do dash logic
@@ -272,4 +276,10 @@ public class PlayerController : MonoBehaviour
         // For animator
         animator.SetBool("Dashing", false);
     }
+    
+    private void CheckWallStatus()
+    {
+        Vector2 direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+        isTouchingWall = Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundLayer);    }
 }       
