@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Transform player;
+    [SerializeField] private Vector2 offset = new Vector2(0f, 1f);
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        if (player == null) return;
+
+        transform.position = new Vector3(
+            player.position.x + offset.x,
+            player.position.y + offset.y,
+            transform.position.z
+        );
     }
 }

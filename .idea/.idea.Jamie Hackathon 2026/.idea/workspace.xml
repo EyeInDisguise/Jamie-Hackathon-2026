@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeSettings">
+    <configurations />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="83455fea-16a1-44a4-a0cf-ebe92ce55a40" name="Changes" comment="finished making tut level, implementing the quit to menu function now">
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Tutorial.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Tutorial.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerCamera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TutorialMenuExit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TutorialMenuExit.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/jamie/Jamie Hackathon 2026" value="3IDfiKqm4iHLaRVjtmIG1gc4maQ" />
+    </persistenceIdMap>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="3" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;EyeInDisguise&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/EyeInDisguise/Jamie-Hackathon-2026.git&quot;,
+    &quot;accountId&quot;: &quot;a2bc0f35-2636-4e50-8e75-09c4b50ba69d&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GhostPlayback.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0067075424721699" />
+      <entry key="MS500" value="1.36754683409726" />
+      <entry key="S2" value="1.778624691061662" />
+      <entry key="S5" value="1.9047555765934832" />
+      <entry key="S10" value="1.9511864047564407" />
+      <entry key="S30" value="1.9834566276303125" />
+      <entry key="S60" value="1.9916939025313556" />
+      <entry key="M2" value="1.997141833059523" />
+      <entry key="M5" value="2.421630943395556" />
+      <entry key="M10" value="4.930619106605908" />
+      <entry key="M15" value="7.775973169620324" />
+      <entry key="M30" value="16.14770090635465" />
+      <entry key="H1" value="35.48025547305297" />
+      <entry key="H2" value="85.70457722924297" />
+      <entry key="H4" value="214.2170726815406" />
+      <entry key="D1" value="828.2863789063888" />
+      <entry key="W1" value="1140.7769053645063" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="6.753438753384626E-263" />
+      <entry key="S60" value="8.217930854773959E-132" />
+      <entry key="M2" value="2.866693366018408E-66" />
+      <entry key="M5" value="6.066699679859359E-27" />
+      <entry key="M10" value="7.788945070907702E-14" />
+      <entry key="M15" value="1.8244645336283029E-9" />
+      <entry key="M30" value="4.4092214221209494E-5" />
+      <entry key="H1" value="0.009953037629664227" />
+      <entry key="H2" value="0.28830062622435887" />
+      <entry key="H4" value="1.9885682111216292" />
+      <entry key="D1" value="11.160283530474906" />
+      <entry key="W1" value="15.19157559901647" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.011150786701562233" />
+      <entry key="MS500" value="0.6603749887254119" />
+      <entry key="S2" value="1.5101164858107017" />
+      <entry key="S5" value="1.7868340938714011" />
+      <entry key="S10" value="1.8903146886025959" />
+      <entry key="S30" value="1.9627256024820805" />
+      <entry key="S60" value="1.9812723157417467" />
+      <entry key="M2" value="1.9919169159959615" />
+      <entry key="M5" value="2.4195339865868544" />
+      <entry key="M10" value="4.929558562457414" />
+      <entry key="M15" value="7.775252360980584" />
+      <entry key="M30" value="16.147323660144412" />
+      <entry key="H1" value="35.489857594017586" />
+      <entry key="H2" value="85.99236619644184" />
+      <entry key="H4" value="216.2047062546133" />
+      <entry key="D1" value="839.445904617197" />
+      <entry key="W1" value="1155.9683312689133" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3IDfi8HXnKrTu2QBMas7dSJe3Jy" />
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.5.6f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;$PROJECT_DIR$&quot; -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.5.6f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;$PROJECT_DIR$&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to" type="UnityDevicePlayer" factoryName="UnityAttachToDevicePlayer">
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="83455fea-16a1-44a4-a0cf-ebe92ce55a40" name="Changes" comment="" />
+      <created>1787304187481</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1787304187481</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityProjectDiscoverer">
+    <option name="hasUnityReference" value="true" />
+    <option name="unityProject" value="true" />
+    <option name="unityProjectFolder" value="true" />
+  </component>
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Can store ability based on input (1-4 so far)" />
+    <MESSAGE value="Implemented a simple dash only going horizontally" />
+    <MESSAGE value="implemented diagnol dashing (made it normalised as well)" />
+    <MESSAGE value="Limited dash to only 1, resets when touching ground" />
+    <MESSAGE value="finished doing the dash animations, takes in account for diagonal dashes and upward/downward dashes" />
+    <MESSAGE value="implemented a wall check using raycasts" />
+    <MESSAGE value="got wall slide working (had to reduce ground check radius for it to work close)" />
+    <MESSAGE value="implemented the wall jump, jumps diagonally when player is on wall" />
+    <MESSAGE value="implemented wall slide/jump animations" />
+    <MESSAGE value="made a simple gravity ability for 3, but the ground collision buggy cause it doesnt also flip" />
+    <MESSAGE value="implemented gravity ability (3), now can jump while flipped." />
+    <MESSAGE value="added wall sliding on gravity flipped" />
+    <MESSAGE value="fixed wall jumping when flipped" />
+    <MESSAGE value="time stop &quot;STATE&quot; works for three seconds when pressed" />
+    <MESSAGE value="added moving hazard script that stops when time stop is active, added some unversioned files (not idea)." />
+    <MESSAGE value="Moving hazard now resumes where it was stopped" />
+    <MESSAGE value="added a working timer that doesnt stop with timestop" />
+    <MESSAGE value="finally fixed stupid detection bugs" />
+    <MESSAGE value="implented triggers for race start and end" />
+    <MESSAGE value="implemented finish ui and have name input and stores name and time on log" />
+    <MESSAGE value="started implementing the ghost time trial recorder (saves to log)" />
+    <MESSAGE value="fixed ghost time trial and added a leaderboard reset" />
+    <MESSAGE value="made function main menu and made tutorial scene and quit function" />
+    <MESSAGE value="making tutorial level and making controller script" />
+    <MESSAGE value="finished making tut level, implementing the quit to menu function now" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished making tut level, implementing the quit to menu function now" />
+  </component>
+</project>
