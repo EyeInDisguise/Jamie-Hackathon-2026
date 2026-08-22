@@ -204,6 +204,10 @@ This guy is the goat:
 
 ---
 
+## Notion
+I was recording some stuff on Notion you can check out here
+https://opalescent-wildcat-81e.notion.site/Jamie-Williams-Hackathon-2026-3c309feb1bf180458d28fb4e68c4aab8?source=copy_link
+
 ## AI Usage
 
 I ain't no saint, especially doing this project solo.
