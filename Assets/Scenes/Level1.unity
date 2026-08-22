@@ -3983,6 +3983,7 @@ MonoBehaviour:
   verticalDeadZone: 0.6
   lookAheadDistance: 1.5
   lookAheadSpeed: 5
+  zoomSpeed: 5
 --- !u!1 &557325876
 GameObject:
   m_ObjectHideFlags: 0
@@ -4152,6 +4153,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 30.25069, y: 0.82822895, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &572666989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572666990}
+  m_Layer: 0
+  m_Name: RestartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &572666990
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572666989}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5109,6 +5141,7 @@ GameObject:
   - component: {fileID: 743393100}
   - component: {fileID: 743393102}
   - component: {fileID: 743393103}
+  - component: {fileID: 743393104}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5178,6 +5211,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostRecorder
   player: {fileID: 1491022165}
+--- !u!114 &743393104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743393099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4674967a126084105be0aabfc0673448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RunResetManager
+  playerController: {fileID: 1491022162}
+  restartPoint: {fileID: 572666990}
+  speedrunTimer: {fileID: 743393100}
+  finishPanel: {fileID: 1348291030}
+  nameInput: {fileID: 1158349293}
+  playerCamera: {fileID: 519420033}
 --- !u!1 &744285985
 GameObject:
   m_ObjectHideFlags: 0
@@ -7257,6 +7308,7 @@ GameObject:
   - component: {fileID: 1140041220}
   - component: {fileID: 1140041219}
   - component: {fileID: 1140041218}
+  - component: {fileID: 1140041221}
   m_Layer: 5
   m_Name: SubmitButton
   m_TagString: Untagged
@@ -7328,9 +7380,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 743393102}
-        m_TargetAssemblyTypeName: LeaderboardManager, Assembly-CSharp
-        m_MethodName: SubmitScore
+      - m_Target: {fileID: 1140041221}
+        m_TargetAssemblyTypeName: LeaderboardSubmitRestart, Assembly-CSharp
+        m_MethodName: SubmitAndRestart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7378,6 +7430,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140041216}
   m_CullTransparentMesh: 1
+--- !u!114 &1140041221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140041216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e5b1ebcda4a40e19c6c6a8c143e67e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeaderboardSubmitRestart
+  nameInput: {fileID: 1158349293}
+  leaderboardManager: {fileID: 743393102}
+  runResetManager: {fileID: 743393104}
 --- !u!1 &1158349291
 GameObject:
   m_ObjectHideFlags: 0
@@ -13837,3 +13904,4 @@ SceneRoots:
   - {fileID: 1910583654}
   - {fileID: 1723845180}
   - {fileID: 391696336}
+  - {fileID: 572666990}

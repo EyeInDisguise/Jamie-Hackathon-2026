@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
     // Components
     private Rigidbody2D rb;
+    private float normalGravityScale;
 
     // Input System
     private PlayerControls controls;
@@ -101,6 +102,10 @@ public class PlayerController : MonoBehaviour
     {
         // Initialises all the components
         rb = GetComponent<Rigidbody2D>();
+
+        // Remember normal gravity so we can restore it after a run
+        normalGravityScale = Mathf.Abs(rb.gravityScale);
+
         controls = new PlayerControls();
     }
 
@@ -140,7 +145,6 @@ public class PlayerController : MonoBehaviour
 
             animator.SetTrigger("WallJump");
 
-            // Play wall jump sound
             AudioManager.Instance?.PlayWallJump();
 
             isJumping = true;
@@ -166,7 +170,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         horizontalInput = controls.Player.Move.ReadValue<float>();
 
@@ -177,11 +181,9 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Land");
 
-            // Play landing sound once
             AudioManager.Instance?.PlayLand();
         }
 
-        // Vertical velocity relative to gravity
         float verticalVelocity =
             gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
 
@@ -191,7 +193,6 @@ public class PlayerController : MonoBehaviour
             canDash = true;
         }
 
-        // Detect when landed
         if (isGrounded && verticalVelocity <= 0f)
         {
             isJumping = false;
@@ -220,7 +221,6 @@ public class PlayerController : MonoBehaviour
             !isJumping
         )
         {
-            // Jumping from ceiling pushes player away
             float jumpDirection = gravityFlipped ? -1f : 1f;
 
             rb.linearVelocity = new Vector2(
@@ -228,7 +228,6 @@ public class PlayerController : MonoBehaviour
                 jumpForce * jumpDirection
             );
 
-            // Play jump sound
             AudioManager.Instance?.PlayJump();
 
             isJumping = true;
@@ -237,7 +236,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // Flip the player depending on direction
-        // Also accounts for flipped gravity
         if (horizontalInput > 0f)
         {
             spriteRenderer.flipX = gravityFlipped;
@@ -247,10 +245,8 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = !gravityFlipped;
         }
 
-        // Wall jump
         CheckWallStatus();
 
-        // Animation speed also accounts for momentum
         float animationSpeed = Mathf.Max(
             Mathf.Abs(horizontalInput),
             Mathf.Abs(rb.linearVelocity.x) / moveSpeed
@@ -323,7 +319,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // Horizontal acceleration/deceleration
         float targetSpeed = horizontalInput * moveSpeed;
 
         float rate =
@@ -342,8 +337,6 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity.y
         );
 
-        // Vertical velocity relative to current gravity direction
-        // Negative means falling even when upside down
         float verticalVelocity =
             gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
 
@@ -381,7 +374,6 @@ public class PlayerController : MonoBehaviour
                     );
             }
 
-            // Recalculate since gravity changed velocity
             verticalVelocity =
                 gravityFlipped
                     ? -rb.linearVelocity.y
@@ -405,7 +397,6 @@ public class PlayerController : MonoBehaviour
     {
         wasGrounded = isGrounded;
 
-        // Use ceiling check when gravity is flipped
         Transform activeCheck =
             gravityFlipped ? ceilingCheck : groundCheck;
 
@@ -421,14 +412,11 @@ public class PlayerController : MonoBehaviour
         canDash = false;
         isDashing = true;
 
-        // Play dash sound once
         AudioManager.Instance?.PlayDash();
 
-        // Temporarily disable gravity
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
-        // Calculate dash direction
         Vector2 dashDirection =
             controls.Player.DashDirection.ReadValue<Vector2>();
 
@@ -440,7 +428,6 @@ public class PlayerController : MonoBehaviour
                     : Vector2.right;
         }
 
-        // Keep diagonal dash speed the same
         dashDirection.Normalize();
 
         rb.linearVelocity = dashDirection * dashSpeed;
@@ -448,7 +435,6 @@ public class PlayerController : MonoBehaviour
         bool sidewaysDash =
             Mathf.Abs(dashDirection.x) > 0.1f;
 
-        // Choose animation depending on dash direction
         if (sidewaysDash)
         {
             animator.Play("Dash", 0, 0f);
@@ -501,7 +487,6 @@ public class PlayerController : MonoBehaviour
                 ? Quaternion.Euler(0f, 0f, 180f)
                 : Quaternion.identity;
 
-        // Play gravity flip sound
         AudioManager.Instance?.PlayGravityFlip();
     }
 
@@ -510,7 +495,6 @@ public class PlayerController : MonoBehaviour
     {
         isTimeStopped = true;
 
-        // Play time stop sound
         AudioManager.Instance?.PlayTimeStop();
 
         yield return new WaitForSeconds(timeStopDuration);
@@ -522,10 +506,59 @@ public class PlayerController : MonoBehaviour
     {
         currentAbility = ability;
 
-        // Update HUD
         abilityUI.SetAbility(currentAbility);
 
-        // Play RFID / ability select sound
         AudioManager.Instance?.PlayAbilitySelect();
+    }
+
+    // Reset the player without reloading the scene
+    public void ResetForNewRun(Vector3 startPosition)
+    {
+        // Stop dash/time stop from the previous run
+        StopAllCoroutines();
+
+        // Teleport back and remove momentum
+        rb.position = startPosition;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        // Reset gravity
+        gravityFlipped = false;
+        rb.gravityScale = normalGravityScale;
+        visualPivot.localRotation = Quaternion.identity;
+        spriteRenderer.flipX = false;
+
+        // Reset ability/movement state
+        isDashing = false;
+        canDash = true;
+        isTimeStopped = false;
+        isWallSliding = false;
+        isTouchingWall = false;
+        wallLeft = false;
+        wallRight = false;
+
+        isJumping = false;
+        horizontalInput = 0f;
+
+        jumpBufferCounter = 0f;
+        coyoteTimeCounter = 0f;
+
+        currentAbility = 0;
+
+        isGrounded = false;
+        wasGrounded = false;
+
+        // Reset ability HUD
+        if (abilityUI != null)
+        {
+            abilityUI.SetAbility(0);
+        }
+
+        // Reset animation
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+        }
     }
 }

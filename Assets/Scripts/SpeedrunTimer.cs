@@ -47,6 +47,15 @@ public class SpeedrunTimer : MonoBehaviour
         leaderboardManager.ShowFinishScreen(elapsedTime);
     }
 
+    // Reset without starting another run
+    public void ResetTimer()
+    {
+        timerRunning = false;
+        elapsedTime = 0f;
+
+        UpdateTimerUI();
+    }
+
     private void UpdateTimerUI()
     {
         int minutes = Mathf.FloorToInt(elapsedTime / 60f);
