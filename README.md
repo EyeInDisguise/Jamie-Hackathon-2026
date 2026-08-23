@@ -176,6 +176,124 @@ The fastest recorded run can also be replayed as a ghost.
 
 ---
 
+
+## Running the Game
+
+This project has a WebGL build.
+
+### Option 1: Run from Unity
+
+The easiest way to run the game is through Unity.
+
+1. Open the project in Unity.
+2. Go to:
+
+```text
+File
+→ Build Profiles
+→ Web
+```
+
+3. Make sure the Web build profile is active.
+4. Click:
+
+```text
+Build And Run
+```
+
+5. Unity will start a local web server and open the game automatically in your browser.
+
+The game should open using an address similar to:
+
+```text
+http://localhost:xxxxx
+```
+
+### Option 2: Run the Existing WebGL Build
+
+Do not open `index.html` directly by double-clicking it.
+
+Unity WebGL builds need to be served through a local web server.
+
+Open a terminal and navigate to the folder containing `index.html`.
+
+For example:
+
+```bash
+cd JamieHackathonGame
+```
+
+Then start a local Python web server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open a browser and go to:
+
+```text
+http://localhost:8000
+```
+
+To stop the server, return to the terminal and press:
+
+```text
+Ctrl + C
+```
+
+### Controls
+
+```text
+A / D        = Move
+Space        = Jump
+Left Shift   = Use current ability
+
+1 = Dash
+2 = Wall Jump
+3 = Gravity Flip
+4 = Time Stop
+```
+
+The ability keys can also be sent through the ESP32 RFID controller.
+
+### RFID Controller
+
+When using the RFID controller:
+
+1. Connect the ESP32 to power.
+2. Pair the Bluetooth device named:
+
+```text
+Hackathon Keyboard
+```
+
+3. Start the game.
+4. Click inside the game window so it has keyboard focus.
+5. Scan an RFID ability token.
+
+The RFID reader sends the following keyboard inputs:
+
+```text
+Dash        -> 1
+Wall Jump   -> 2
+Gravity     -> 3
+Time Stop   -> 4
+```
+
+### WebGL Notes
+
+If the game is opened directly using a path such as:
+
+```text
+file:///...
+```
+
+it may display a script error.
+
+Always run the WebGL build through Unity's `Build And Run` option or through a local web server.
+
+I couldn't publish to play from unity cause of some network error :(
+
 ## Resources Used
 
 Some resources that were beneficial throughout development.
