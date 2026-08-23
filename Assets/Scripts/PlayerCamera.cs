@@ -33,14 +33,14 @@ public class PlayerCamera : MonoBehaviour
 
         if (cam == null)
         {
-            Debug.LogError("PlayerCamera needs to be on the Main Camera!");
+           // Debug.LogError("PlayerCamera needs to be on the Main Camera!");
             return;
         }
 
         normalCameraSize = cam.orthographicSize;
         targetCameraSize = normalCameraSize;
 
-        Debug.Log("Normal camera size: " + normalCameraSize);
+      //  Debug.Log("Normal camera size: " + normalCameraSize);
     }
 
     private void LateUpdate()
@@ -107,14 +107,14 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetZoom(float newSize)
     {
-        Debug.Log("Camera zoom requested: " + newSize);
+    //    Debug.Log("Camera zoom requested: " + newSize);
 
         targetCameraSize = newSize;
     }
 
     public void ResetZoom()
     {
-        Debug.Log("Camera zoom reset: " + normalCameraSize);
+      //  Debug.Log("Camera zoom reset: " + normalCameraSize);
 
         targetCameraSize = normalCameraSize;
     }

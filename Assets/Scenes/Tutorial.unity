@@ -1762,10 +1762,10 @@ MonoBehaviour:
   gravityIcon: {fileID: 1042097051}
   timeIcon: {fileID: 353761497}
   inactiveColour: {r: 0.3773585, g: 0.34709862, b: 0.34709862, a: 1}
-  dashColour: {r: 0, g: 1, b: 1, a: 1}
-  wallColour: {r: 1, g: 0.5, b: 0, a: 1}
-  gravityColour: {r: 1, g: 0, b: 1, a: 1}
-  timeColour: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  dashColour: {r: 0, g: 0, b: 0, a: 1}
+  wallColour: {r: 1, g: 1, b: 1, a: 1}
+  gravityColour: {r: 0.18431373, g: 0, b: 1, a: 1}
+  timeColour: {r: 1, g: 0.11183095, b: 0, a: 1}
   normalScale: 1
   activeScale: 1.3
 --- !u!1 &688571118

@@ -23,7 +23,7 @@ MFRC522 mfrc522{driver};         // Create MFRC522 instance
 MFRC522::MIFARE_Key key;
 
 byte blockAddress = 2;
-byte newBlockData[17] = {"dash000000000000"};
+byte newBlockData[17] = {"timestop00000000"}; // Data to write to the card
 byte bufferblocksize = 18;
 byte blockDataRead[18];
 char scannedAbility[17] = {};

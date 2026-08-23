@@ -44,41 +44,41 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("AudioManager started");
+        //Debug.Log("AudioManager started");
 
         if (musicSource == null)
         {
-            Debug.LogWarning("MusicSource is not assigned!");
+           // Debug.LogWarning("MusicSource is not assigned!");
             return;
         }
 
         if (backgroundMusic == null)
         {
-            Debug.LogWarning("Background music is not assigned!");
+           // Debug.LogWarning("Background music is not assigned!");
             return;
         }
 
         musicSource.clip = backgroundMusic;
         musicSource.loop = true;
 
-        Debug.Log("Starting music: " + backgroundMusic.name);
+        //Debug.Log("Starting music: " + backgroundMusic.name);
 
         musicSource.Play();
 
-        Debug.Log("Music isPlaying: " + musicSource.isPlaying);
+      //  Debug.Log("Music isPlaying: " + musicSource.isPlaying);
     }
 
     private void PlaySound(AudioClip clip)
     {
         if (sfxSource == null)
         {
-            Debug.LogWarning("SFXSource is not assigned!");
+         //   Debug.LogWarning("SFXSource is not assigned!");
             return;
         }
 
         if (clip == null)
         {
-            Debug.LogWarning("Tried to play a sound, but no AudioClip was assigned.");
+        //    Debug.LogWarning("Tried to play a sound, but no AudioClip was assigned.");
             return;
         }
 

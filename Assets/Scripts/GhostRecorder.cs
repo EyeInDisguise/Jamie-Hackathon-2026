@@ -50,6 +50,6 @@ public class GhostRecorder : MonoBehaviour
     {
         isRecording = false;
 
-        Debug.Log("Ghost frames recorded: " + frames.Count);
+       // Debug.Log("Ghost frames recorded: " + frames.Count);
     }
 }

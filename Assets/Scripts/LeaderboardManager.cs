@@ -56,13 +56,13 @@ public class LeaderboardManager : MonoBehaviour
     public void ShowFinishScreen(float time)
     {
         scoreSubmitted = false;
-        Debug.Log("2. SHOW FINISH SCREEN");
+      //  Debug.Log("2. SHOW FINISH SCREEN");
 
         finishedTime = time;
 
         finishPanel.SetActive(true);
 
-        Debug.Log("3. PANEL ACTIVE: " + finishPanel.activeSelf);
+            //Debug.Log("3. PANEL ACTIVE: " + finishPanel.activeSelf);
 
         finalTimeText.text = $"TIME: {FormatTime(time)}";
 
@@ -79,7 +79,7 @@ public class LeaderboardManager : MonoBehaviour
 
         if (playerName.Length == 0)
         {
-            Debug.Log("Enter a name first");
+            //Debug.Log("Enter a name first");
             return;
         }
 
@@ -102,7 +102,7 @@ public class LeaderboardManager : MonoBehaviour
         if (isNewBest)
         {
             ghostPlayback.SaveBestGhost(ghostRecorder.Frames);
-            Debug.Log(playerName + " is the new ghost!");
+           // Debug.Log(playerName + " is the new ghost!");
         }
 
         scoreSubmitted = true;
@@ -164,7 +164,7 @@ public class LeaderboardManager : MonoBehaviour
 
         UpdateLeaderboardText();
 
-        Debug.Log("Leaderboard reset");
+       // Debug.Log("Leaderboard reset");
     }
 
     void Update()

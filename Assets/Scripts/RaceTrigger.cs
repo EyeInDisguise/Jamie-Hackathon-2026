@@ -14,12 +14,12 @@ public class RaceTrigger : MonoBehaviour
 
         if (startsRace)
         {
-            Debug.Log("Starting timer");
+           // Debug.Log("Starting timer");
             timer.StartTimer();
         }
         else
         {
-            Debug.Log("Stopping timer");
+           // Debug.Log("Stopping timer");
             timer.StopTimer();
         }
     }

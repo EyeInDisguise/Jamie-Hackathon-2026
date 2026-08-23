@@ -18,6 +18,6 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
 
         // Lets us see that the button works inside the Unity Editor
-        Debug.Log("Quit Game");
+       // Debug.Log("Quit Game");
     }
 }
