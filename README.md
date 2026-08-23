@@ -203,6 +203,9 @@ This guy is the goat:
 [Tarodev](https://www.youtube.com/@Tarodev)
 
 ---
+### Music Assets
+https://getkominami.com/bgm (for the music)
+https://pixabay.com/sound-effects/search/button%20click/ (for the SFX)
 
 ## Notion
 I was recording some stuff on Notion you can check out here
