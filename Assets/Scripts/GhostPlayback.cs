@@ -76,7 +76,7 @@ public class GhostPlayback : MonoBehaviour
         // No #1 ghost has been saved yet
         if (bestFrames == null || bestFrames.Count < 2)
         {
-           // Debug.Log("No best ghost available");
+            // Debug.Log("No best ghost available");
             return;
         }
 
@@ -93,13 +93,6 @@ public class GhostPlayback : MonoBehaviour
         float ghostDuration =
             frames[frames.Count - 1].time - frames[0].time;
 
-        //Debug.Log(
-            "Playing best ghost: " +
-            frames.Count +
-            " frames, duration: " +
-            ghostDuration +
-            " seconds"
-        );
     }
 
     public void SaveBestGhost(List<GhostRecorder.GhostFrame> newFrames)
@@ -117,14 +110,6 @@ public class GhostPlayback : MonoBehaviour
         float ghostDuration =
             bestFrames[bestFrames.Count - 1].time -
             bestFrames[0].time;
-
-        //Debug.Log(
-            "New #1 ghost saved: " +
-            bestFrames.Count +
-            " frames, duration: " +
-            ghostDuration +
-            " seconds"
-        );
     }
 
     public void StopPlayback()
