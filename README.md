@@ -1,22 +1,111 @@
-# Note: I am implementing improvements and fixes for this game to make it actually playable :)
-
-
 # Jamie Hackathon 2026
 
-A 2D speedrun platformer built in Unity with a custom RFID-based ability switching system.
+A 2D speedrun platformer where physical RFID tokens change your abilities.
 
-The player can switch between four movement abilities by scanning physical RFID tags with an ESP32 and MFRC522 reader. The ESP32 acts as a Bluetooth keyboard and sends number key inputs to Unity.
+I built this solo in 2–3 days for a hackathon using Unity, an ESP32 and an MFRC522 RFID reader. The reader sends keyboard inputs over Bluetooth, so you can also play with a normal keyboard without the hardware.
 
-## Abilities
+## Current status
 
-| Ability | Key |
+I'm continuing development after the hackathon: tuning movement, improving level readability and the ability HUD, and fixing the browser experience.
+
+The updated Web build has been built and run locally on Windows. It uses a custom responsive template to fit the browser window. A public link to the updated demo is not available yet.
+
+Crush detection, reset behaviour and race/leaderboard edge cases are still being worked on. This is a work in progress, not a finished release.
+
+## Controls
+
+Click inside the game to give it keyboard focus.
+
+| Input | Action |
 | --- | --- |
-| Dash | `1` |
-| Wall Jump | `2` |
-| Gravity Flip | `3` |
-| Time Stop | `4` |
+| A / D | Move |
+| Space | Jump; release early for a shorter jump |
+| 1 | Select Dash |
+| 2 | Select Wall Jump |
+| 3 | Select Gravity Flip |
+| 4 | Select Time Stop |
+| Left Shift | Activate the selected Dash, Gravity Flip or Time Stop ability |
+| Space while airborne against a wall, with ability 2 selected | Wall jump |
 
-The RFID tags store one of these 16-byte strings:
+Scanning an RFID token selects the corresponding ability, just like pressing a number key.
+
+## Running the project
+
+### 1. Clone and download the assets
+
+Install Git with Git LFS support, then run:
+
+```sh
+git clone https://github.com/EyeInDisguise/Jamie-Hackathon-2026.git
+cd Jamie-Hackathon-2026
+git lfs install
+git lfs pull
+```
+
+Images, audio and other binary assets use **Git LFS**. If an image or audio file is only a few lines of text beginning with `version https://git-lfs.github.com/spec/v1`, it is a pointer rather than the actual media. Finish downloading the LFS files before opening Unity.
+
+### 2. Open in Unity
+
+1. Install **Unity 6000.5.6f1** through Unity Hub, including **Web Build Support**.
+2. In Hub, choose **Add project from disk** and select the cloned folder containing `Assets`, `Packages` and `ProjectSettings`.
+3. Open the project and wait for asset importing to finish.
+4. Open `Assets/Scenes/MainMenu.unity` and press Play.
+
+### 3. Build for the browser
+
+1. Save your scenes and exit Play mode.
+2. Open **File → Build Profiles** and activate the Web profile.
+3. Check that the enabled scenes are `MainMenu`, `Tutorial` and `Level1`, with `MainMenu` first.
+4. Open the active profile's **Player Settings → Resolution and Presentation**.
+5. Select the **Responsive** WebGL template and use **960 × 540** as the default canvas dimensions.
+6. Choose **Build And Run**, exporting outside `Assets`, for example to `C:\UnityBuilds\RFID-Web-Polish` on Windows.
+
+If the profile has its own Player Settings, change those settings rather than the global ones. The custom template lives in `Assets/WebGLTemplates/Responsive` and is used when Unity exports a new build.
+
+Unity starts a local server and opens the build in your browser. Do not launch a Web build by double-clicking `index.html` using a `file://` address.
+
+**Compression:** compressed Web builds need matching server configuration, or a build made with **Decompression Fallback** enabled. The older Brotli-compressed build in `JamieHackathonGame` needs appropriate `Content-Encoding: br` headers; a basic static server may not serve it correctly.
+
+Changing scenes or scripts does not update an existing exported build. Rebuild to include those changes. The older export may differ from the current source project.
+
+## Gameplay
+
+The idea is to find a fast route through the course, switching abilities to suit each obstacle. The timer starts at the start trigger, and reaching the finish lets you submit a name and time to the local leaderboard.
+
+The game includes:
+
+- Movement with acceleration, coyote time, jump buffering and variable jump height
+- Dash, wall slide/jump, gravity flip and time stop
+- Moving hazards
+- A tutorial and ability HUD
+- A speedrun timer, local leaderboard and ghost replay
+- Keyboard and physical RFID ability selection
+
+## Why RFID?
+
+Not long before this hackathon, I made a 2D platformer for a game jam where the theme was **gravity**. That got me thinking about how changing one movement rule could change the way a platformer feels.
+
+Then I saw someone selling **Disney Infinity** figures on Facebook Marketplace. It reminded me of games where physical objects interact with the game, and I wanted to try a smaller version of that idea.
+
+The result was physical tokens for different movement abilities:
+
+```text
+RFID token → MFRC522 reader → ESP32 → Bluetooth keyboard input → Unity
+```
+
+Using Bluetooth HID means Unity receives ordinary keyboard input rather than needing a custom Bluetooth connection inside the game.
+
+## RFID controller
+
+### Hardware and setup
+
+- ESP32
+- MFRC522 RFID reader, connected over SPI
+- RFID tags or key fobs
+
+Power the ESP32, pair the Bluetooth device named **Hackathon Keyboard**, then click inside the running game and scan a token.
+
+The tags use these ability strings:
 
 ```text
 dash000000000000
@@ -25,350 +114,62 @@ gravity000000000
 time000000000000
 ```
 
-## How It Works
+They map to keys `1`, `2`, `3` and `4` respectively.
 
-```text
-RFID tag
-   |
-   v
-MFRC522 reader
-   |
-   v
-ESP32
-   |
-   v
-Bluetooth keyboard input
-   |
-   v
-Unity Input System
-   |
-   v
-Player ability changes
+### Firmware
+
+The firmware uses PlatformIO with the Arduino framework. Its libraries include:
+
+- ESP32-BLE-CompositeHID
+- NimBLE-Arduino
+- Callback
+- Arduino_MFRC522v2
+
+From the `RFIDReader` directory:
+
+```sh
+pio run                 # Build
+pio run -t upload       # Upload to the connected ESP32
+pio device monitor      # Serial monitor (115200 baud)
 ```
 
-Because the ESP32 behaves like a normal keyboard, the game can also be tested without the RFID hardware by pressing the number keys directly.
-
-## Features
-
-- 2D platforming movement
-- Coyote time
-- Jump buffering
-- Variable jump height
-- Dash
-- Wall slide and wall jump
-- Gravity flipping
-- Time stop
-- Moving hazards
-- RFID-based ability switching
-- Bluetooth HID input
-- Speedrun timer
-- Local leaderboard
-- Ghost replay
-- Tutorial level
-- Ability HUD
-
-## Inspiration
-How on earth did I get this idea?!??!?!
-The idea for this project came from a couple of things I had been doing and seeing recently.
-
-Not long before this hackathon, I made a 2D platformer for a game jam on itch.io where the theme was **gravity**. That got me thinking more about movement mechanics and how changing one core rule of movement can completely change how a platformer feels.
-
-Then recently I was browsing Facebook Marketplace and saw someone selling **Disney Infinity** figures.
-
-That reminded me of games where physical figures or objects interact with the game itself, and I started thinking about whether I could make something similar in a much simpler way.
-
-The basic idea became:
-
-```text
-Physical token
-    |
-    v
-RFID reader
-    |
-    v
-Ability changes in-game
-
-## Project Structure
+## Project structure
 
 ```text
 Jamie-Hackathon-2026/
 ├── Assets/
+│   ├── Scenes/
+│   ├── Scripts/
+│   └── WebGLTemplates/
+│       └── Responsive/
 ├── Packages/
 ├── ProjectSettings/
 ├── RFIDReader/
-│   ├── include/
-│   ├── lib/
 │   ├── src/
 │   │   └── main.cpp
-│   ├── test/
 │   └── platformio.ini
+├── JamieHackathonGame/    # Older exported browser build
 └── README.md
 ```
 
-## RFID Hardware
+## Resources and credits
 
-The RFID controller uses an ESP32 and MFRC522 RFID reader.
+These resources helped me while building the project:
 
-The ESP32 firmware is built using PlatformIO with the Arduino framework.
+- [ESP32 with MFRC522 RFID reader](https://randomnerdtutorials.com/esp32-mfrc522-rfid-reader-arduino/)
+- [Unity 2D platformer tutorial](https://generalistprogrammer.com/tutorials/unity-2d-platformer-complete-tutorial-game-development)
+- [Player movement video](https://www.youtube.com/watch?v=g95rDlLfF1U)
+- [Time-trial video](https://www.youtube.com/watch?v=GkAQh2QzdJA)
+- [Tarodev](https://www.youtube.com/@Tarodev)
+- [Music: Get Kominami](https://getkominami.com/bgm)
+- [Button sound effects: Pixabay](https://pixabay.com/sound-effects/search/button%20click/)
 
-### Libraries
+[My hackathon notes on Notion](https://opalescent-wildcat-81e.notion.site/Jamie-Williams-Hackathon-2026-3c309feb1bf180458d28fb4e68c4aab8?source=copy_link)
 
-The RFID project uses:
+## AI usage
 
-```text
-ESP32-BLE-CompositeHID
-NimBLE-Arduino
-Callback
-Arduino_MFRC522v2
-```
+I used AI during development for programming assistance, debugging, explanations and documentation, including this README. The ghost time-trial system involved more substantial assistance because it was one of the harder parts to put together.
 
-### Build
+Other uses included troubleshooting Unity/C#, ESP32 firmware, RFID and Bluetooth behaviour; discussing implementation approaches; reviewing and refactoring code; and help with Git and project structure.
 
-From the `RFIDReader` directory:
-
-```bash
-pio run
-```
-
-### Upload
-
-```bash
-pio run -t upload
-```
-
-### Serial Monitor
-
-```bash
-pio device monitor
-```
-
-The serial monitor runs at:
-
-```text
-115200 baud
-```
-
-## Unity Input
-
-The RFID reader behaves as a Bluetooth keyboard.
-
-The ability mappings are:
-
-```text
-1 = Dash
-2 = Wall Jump
-3 = Gravity Flip
-4 = Time Stop
-```
-
-Unity receives the same number key input whether it comes from the physical RFID scanner or from a normal keyboard.
-
-This means the game can still be developed and tested without having the RFID hardware connected.
-
-## Game Loop
-
-The game is designed as a short speedrun level.
-
-The player moves through the level and switches between abilities depending on the obstacle they are trying to pass.
-
-The timer starts when the player enters the start trigger and stops when they reach the finish trigger.
-
-After finishing, the player can enter their name and submit their time to the local leaderboard.
-
-The fastest recorded run can also be replayed as a ghost.
-
----
-
-
-## Running the Game
-
-This project has a WebGL build.
-
-### Option 1: Run from Unity
-
-The easiest way to run the game is through Unity.
-
-1. Open the project in Unity.
-2. Go to:
-
-```text
-File
-→ Build Profiles
-→ Web
-```
-
-3. Make sure the Web build profile is active.
-4. Click:
-
-```text
-Build And Run
-```
-
-5. Unity will start a local web server and open the game automatically in your browser.
-
-The game should open using an address similar to:
-
-```text
-http://localhost:xxxxx
-```
-
-### Option 2: Run the Existing WebGL Build
-
-Do not open `index.html` directly by double-clicking it.
-
-Unity WebGL builds need to be served through a local web server.
-
-Open a terminal and navigate to the folder containing `index.html`.
-
-For example:
-
-```bash
-cd JamieHackathonGame
-```
-
-Then start a local Python web server:
-
-```bash
-python3 -m http.server 8000
-```
-
-Open a browser and go to:
-
-```text
-http://localhost:8000
-```
-
-To stop the server, return to the terminal and press:
-
-```text
-Ctrl + C
-```
-
-### Controls
-
-```text
-A / D        = Move
-Space        = Jump
-Left Shift   = Use current ability
-
-1 = Dash
-2 = Wall Jump
-3 = Gravity Flip
-4 = Time Stop
-```
-
-The ability keys can also be sent through the ESP32 RFID controller.
-
-### RFID Controller
-
-When using the RFID controller:
-
-1. Connect the ESP32 to power.
-2. Pair the Bluetooth device named:
-
-```text
-Hackathon Keyboard
-```
-
-3. Start the game.
-4. Click inside the game window so it has keyboard focus.
-5. Scan an RFID ability token.
-
-The RFID reader sends the following keyboard inputs:
-
-```text
-Dash        -> 1
-Wall Jump   -> 2
-Gravity     -> 3
-Time Stop   -> 4
-```
-
-### WebGL Notes
-
-If the game is opened directly using a path such as:
-
-```text
-file:///...
-```
-
-it may display a script error.
-
-Always run the WebGL build through Unity's `Build And Run` option or through a local web server.
-
-I couldn't publish to play from unity cause of some network error :(
-
-## Resources Used
-
-Some resources that were beneficial throughout development.
-
-### RFID
-
-[ESP32 with MFRC522 RFID Reader](https://randomnerdtutorials.com/esp32-mfrc522-rfid-reader-arduino/)
-
-### Player Controller
-
-These helped with things such as coyote time, jump buffering and general 2D platformer movement:
-
-[Unity 2D Platformer Complete Tutorial](https://generalistprogrammer.com/tutorials/unity-2d-platformer-complete-tutorial-game-development)
-
-[YouTube Tutorial](https://www.youtube.com/watch?v=g95rDlLfF1U)
-
-### Time Trial
-
-[YouTube Tutorial](https://www.youtube.com/watch?v=GkAQh2QzdJA)
-
-### In General
-
-This guy is the goat:
-
-[Tarodev](https://www.youtube.com/@Tarodev)
-
----
-### Music Assets
-https://getkominami.com/bgm (for the music)
-https://pixabay.com/sound-effects/search/button%20click/ (for the SFX)
-
-## Notion
-I was recording some stuff on Notion you can check out here
-https://opalescent-wildcat-81e.notion.site/Jamie-Williams-Hackathon-2026-3c309feb1bf180458d28fb4e68c4aab8?source=copy_link
-
-## AI Usage
-
-I ain't no saint, especially doing this project solo.
-
-AI tools **were** used during development for programming assistance, debugging and explanations.
-
-### How AI Was Used
-
-AI was mainly used for:
-
-- explaining programming errors
-- debugging Unity and C# issues
-- debugging ESP32 and PlatformIO issues
-- troubleshooting RFID behaviour
-- troubleshooting Bluetooth HID behaviour
-- suggesting implementation approaches
-- reviewing and refactoring code
-- explaining unfamiliar APIs and libraries
-- helping with Git and project structure
-- helping write project documentation (this README :D)
-
-AI was also used quite a bit when implementing the ghost time trial system since that ended up being one of the harder systems to put together :(
-
-### Development Process
-
-AI-generated code and suggestions were reviewed and tested before being added to the project.
-
-Changes were modified where necessary to fit the project and to make sure I understood what the code was doing.
-
-AI was used as a development tool rather than as a replacement for testing or understanding the implementation.
-
-### My Contribution
-
-The project concept, game design, RFID controller idea, implementation decisions, hardware integration, Unity integration, 3D printing, testing and final submission were completed by me.
-
-I was responsible for deciding what features to implement, integrating the different systems together and testing the final result.
-
-### Transparency
-
-This section is included to clearly document where AI assistance was used during development.
+I reviewed and tested suggestions and adapted them to the project. The concept, game design, hardware integration, 3D printing, implementation decisions, testing and final hackathon submission were my work and responsibility.
