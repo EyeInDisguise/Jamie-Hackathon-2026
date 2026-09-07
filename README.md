@@ -8,7 +8,7 @@ I built this solo in 2–3 days for a hackathon using Unity, an ESP32 and an MFR
 
 Here is the link to play the game via browser, no setup need :)
 
-https://play.unity.com/en/auth/login?redirectUrl=https://play.unity.com/en/games/51c4cc8b-b2fc-4f07-a06d-968e66fd5fc3/polished/edit
+https://play.unity.com/en/games/51c4cc8b-b2fc-4f07-a06d-968e66fd5fc3/polished
 
 ## Current status
 
