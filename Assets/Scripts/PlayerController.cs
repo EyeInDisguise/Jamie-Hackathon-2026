@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform visualPivot;
 
     [Header("Movement Stuff")]
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float jumpForce = 16f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpForce = 12f;
 
     [Header("Jump Stuff")]
     [SerializeField] private float coyoteTime = 0.08f;
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.05f;
 
     [Header("Gravity")]
-    [SerializeField] private float fallGravityMultiplier = 2f;
+    [SerializeField] private float fallGravityMultiplier = 1.46f;
 
     [Header("Ac/De-eleration")]
     [SerializeField] private float acceleration = 50f;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxFallSpeed = 20f;
 
     [Header("Dashing Stuff")]
-    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashSpeed = 12.67f;
     [SerializeField] private float dashDuration = 0.2f;
 
     private bool isDashing;
@@ -53,11 +53,11 @@ public class PlayerController : MonoBehaviour
     private bool isWallSliding;
 
     [Header("Wall Jump")]
-    [SerializeField] private float wallJumpHorizontalForce = 10f;
-    [SerializeField] private float wallJumpVerticalForce = 16f;
+    [SerializeField] private float wallJumpHorizontalForce = 11f;
+    [SerializeField] private float wallJumpVerticalForce = 13f;
 
     [Header("Gravity Stuff")]
-    [SerializeField] private Transform ceilingCheck;
+    [SerializeField] private Transform ceilingCheck;    
 
     private bool gravityFlipped;
 
