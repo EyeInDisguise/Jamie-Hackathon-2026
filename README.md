@@ -1,3 +1,6 @@
+# Note: I am implementing improvements and fixes for this game to make it actually playable :)
+
+
 # Jamie Hackathon 2026
 
 A 2D speedrun platformer built in Unity with a custom RFID-based ability switching system.
