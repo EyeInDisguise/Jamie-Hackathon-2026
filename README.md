@@ -4,6 +4,12 @@ A 2D speedrun platformer where physical RFID tokens change your abilities.
 
 I built this solo in 2–3 days for a hackathon using Unity, an ESP32 and an MFRC522 RFID reader. The reader sends keyboard inputs over Bluetooth, so you can also play with a normal keyboard without the hardware.
 
+## Play Game
+
+Here is the link to play the game via browser, no setup need :)
+
+https://play.unity.com/en/auth/login?redirectUrl=https://play.unity.com/en/games/51c4cc8b-b2fc-4f07-a06d-968e66fd5fc3/polished/edit
+
 ## Current status
 
 I'm continuing development after the hackathon: tuning movement, improving level readability and the ability HUD, and fixing the browser experience.
