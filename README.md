@@ -6,15 +6,13 @@ I built this solo in 2–3 days for a hackathon using Unity, an ESP32 and an MFR
 
 ## Play Game
 
-Here is the link to play the game via browser, no setup need :)
-
-https://play.unity.com/en/games/51c4cc8b-b2fc-4f07-a06d-968e66fd5fc3/polished
+[Play in your browser](https://play.unity.com/en/games/51c4cc8b-b2fc-4f07-a06d-968e66fd5fc3/polished) — no setup needed :)
 
 ## Current status
 
 I'm continuing development after the hackathon: tuning movement, improving level readability and the ability HUD, and fixing the browser experience.
 
-The updated Web build has been built and run locally on Windows. It uses a custom responsive template to fit the browser window. A public link to the updated demo is not available yet.
+The updated Web build has been built and run locally on Windows. It uses a custom responsive template to fit the browser window. You can try the browser demo using the link above.
 
 Crush detection, reset behaviour and race/leaderboard edge cases are still being worked on. This is a work in progress, not a finished release.
 
@@ -117,7 +115,7 @@ The tags use these ability strings:
 dash000000000000
 wall000000000000
 gravity000000000
-time000000000000
+timestop00000000
 ```
 
 They map to keys `1`, `2`, `3` and `4` respectively.
@@ -131,7 +129,7 @@ The firmware uses PlatformIO with the Arduino framework. Its libraries include:
 - Callback
 - Arduino_MFRC522v2
 
-From the `RFIDReader` directory:
+From the `RFIDHackathon` directory:
 
 ```sh
 pio run                 # Build
@@ -150,7 +148,7 @@ Jamie-Hackathon-2026/
 │       └── Responsive/
 ├── Packages/
 ├── ProjectSettings/
-├── RFIDReader/
+├── RFIDHackathon/
 │   ├── src/
 │   │   └── main.cpp
 │   └── platformio.ini
