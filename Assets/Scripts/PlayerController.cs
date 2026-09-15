@@ -259,23 +259,30 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Grounded", isGrounded);
         animator.SetBool("WallSliding", isWallSliding);
 
+        Keyboard keyboard = Keyboard.current;
+
+        if (keyboard == null)
+        {
+            return;
+        }
+
         // Ability selection
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        if (keyboard.digit1Key.wasPressedThisFrame)
         {
             SetAbility(1);
         }
 
-        if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        if (keyboard.digit2Key.wasPressedThisFrame)
         {
             SetAbility(2);
         }
 
-        if (Keyboard.current.digit3Key.wasPressedThisFrame)
+        if (keyboard.digit3Key.wasPressedThisFrame)
         {
             SetAbility(3);
         }
 
-        if (Keyboard.current.digit4Key.wasPressedThisFrame)
+        if (keyboard.digit4Key.wasPressedThisFrame)
         {
             SetAbility(4);
         }
@@ -283,7 +290,7 @@ public class PlayerController : MonoBehaviour
         // Dash
         if (
             currentAbility == 1 &&
-            Keyboard.current.leftShiftKey.wasPressedThisFrame &&
+            keyboard.leftShiftKey.wasPressedThisFrame &&
             canDash &&
             !isDashing
         )
@@ -294,7 +301,7 @@ public class PlayerController : MonoBehaviour
         // Gravity ability
         if (
             currentAbility == 3 &&
-            Keyboard.current.leftShiftKey.wasPressedThisFrame
+            keyboard.leftShiftKey.wasPressedThisFrame
         )
         {
             FlipGravity();
@@ -303,7 +310,7 @@ public class PlayerController : MonoBehaviour
         // Time Stop ability
         if (
             currentAbility == 4 &&
-            Keyboard.current.leftShiftKey.wasPressedThisFrame &&
+            keyboard.leftShiftKey.wasPressedThisFrame &&
             !isTimeStopped
         )
         {
