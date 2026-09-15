@@ -1,5 +1,7 @@
 # Jamie Hackathon 2026
 
+[日本語版](README.ja.md)
+
 A 2D speedrun platformer where physical RFID tokens change your abilities.
 
 I built this solo in 2–3 days for a hackathon using Unity, an ESP32 and an MFRC522 RFID reader. The reader sends keyboard inputs over Bluetooth, so you can also play with a normal keyboard without the hardware.
