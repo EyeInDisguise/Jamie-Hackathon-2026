@@ -13,6 +13,17 @@ public class GhostPlayback : MonoBehaviour
     private bool isPlaying;
     private float playbackTime;
     private int frameIndex;
+    private SpriteRenderer ghostRenderer;
+
+    private void Awake()
+    {
+        ghostRenderer = GetComponent<SpriteRenderer>();
+
+        if (ghostRenderer != null)
+        {
+            ghostRenderer.enabled = false;
+        }
+    }
 
     private void Update()
     {
@@ -88,6 +99,11 @@ public class GhostPlayback : MonoBehaviour
         frameIndex = 0;
         isPlaying = true;
 
+        if (ghostRenderer != null)
+        {
+            ghostRenderer.enabled = true;
+        }
+
         transform.position = frames[0].position;
 
         float ghostDuration =
@@ -122,6 +138,20 @@ public class GhostPlayback : MonoBehaviour
         if (bestFrames != null && bestFrames.Count > 0)
         {
             transform.position = bestFrames[0].position;
+        }
+    }
+
+    public void ClearBestGhost()
+    {
+        bestFrames.Clear();
+        frames = null;
+        isPlaying = false;
+        playbackTime = 0f;
+        frameIndex = 0;
+
+        if (ghostRenderer != null)
+        {
+            ghostRenderer.enabled = false;
         }
     }
 }
