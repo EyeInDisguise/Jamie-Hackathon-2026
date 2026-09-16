@@ -13,7 +13,8 @@ Each step gets its own commit. Before I commit it, I will:
 3. Test keyboard input without the RFID controller.
 4. Run the C# build check when scripts changed.
 5. Read the diff and remove accidental scene or IDE changes.
-6. Commit and push before starting the next step.
+6. Add a plain-language entry to `docs/DEVLOG.md` explaining the change.
+7. Commit and push before starting the next step.
 
 Large features are split by visible result. A level, menu, or camera behaviour should never share a commit with an unrelated cleanup.
 
