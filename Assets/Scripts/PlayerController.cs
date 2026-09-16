@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Visual")]
@@ -69,12 +70,21 @@ public class PlayerController : MonoBehaviour
     [Header("Ability UI")]
     [SerializeField] private AbilityUI abilityUI;
 
+    [Header("Crush Death")]
+    [SerializeField] private RunResetManager runResetManager;
+    [SerializeField] private float minCrushSpeed = 0.05f;
+    [SerializeField, Range(-1f, 0f)] private float opposingSurfaceDot = -0.75f;
+
     // Other scripts can check if time has stopped
     public bool IsTimeStopped => isTimeStopped;
 
     // Components
     private Rigidbody2D rb;
+    private Collider2D playerCollider;
     private float normalGravityScale;
+    private Vector2 initialSpawnPosition;
+    private readonly ContactPoint2D[] crushContacts = new ContactPoint2D[16];
+    private float nextAllowedCrushResetTime;
 
     // Input System
     private PlayerControls controls;
@@ -102,6 +112,8 @@ public class PlayerController : MonoBehaviour
     {
         // Initialises all the components
         rb = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<Collider2D>();
+        initialSpawnPosition = rb.position;
 
         // Remember normal gravity so we can restore it after a run
         normalGravityScale = Mathf.Abs(rb.gravityScale);
@@ -313,6 +325,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CheckForCrushDeath();
+
         // Don't let normal movement overwrite a dash
         if (isDashing)
         {
@@ -390,6 +404,109 @@ public class PlayerController : MonoBehaviour
                     fallDirection * maxFallSpeed
                 );
             }
+        }
+    }
+
+    private void CheckForCrushDeath()
+    {
+        if (Time.unscaledTime < nextAllowedCrushResetTime)
+        {
+            return;
+        }
+
+        int contactCount = playerCollider.GetContacts(crushContacts);
+
+        for (int i = 0; i < contactCount; i++)
+        {
+            ContactPoint2D crusherContact = crushContacts[i];
+            Collider2D crusherCollider = GetOtherCollider(crusherContact);
+
+            if (crusherCollider == null)
+            {
+                continue;
+            }
+
+            MovingHazard crusher = crusherCollider.GetComponentInParent<MovingHazard>();
+
+            if (crusher == null)
+            {
+                continue;
+            }
+
+            Vector2 crusherNormal = GetNormalTowardPlayer(crusherContact);
+
+            // The hazard must be moving into the player, not away or sideways.
+            if (Vector2.Dot(crusher.Velocity, crusherNormal) < minCrushSpeed)
+            {
+                continue;
+            }
+
+            for (int j = 0; j < contactCount; j++)
+            {
+                if (j == i)
+                {
+                    continue;
+                }
+
+                ContactPoint2D blockingContact = crushContacts[j];
+                Collider2D blockingCollider = GetOtherCollider(blockingContact);
+
+                if (blockingCollider == null ||
+                    blockingCollider.GetComponentInParent<MovingHazard>() == crusher)
+                {
+                    continue;
+                }
+
+                Vector2 blockingNormal = GetNormalTowardPlayer(blockingContact);
+
+                // Opposing contact means there is nowhere left for the player to go.
+                if (Vector2.Dot(crusherNormal, blockingNormal) <= opposingSurfaceDot)
+                {
+                    ResetAfterCrush();
+                    return;
+                }
+            }
+        }
+    }
+
+    private Collider2D GetOtherCollider(ContactPoint2D contact)
+    {
+        return contact.collider == playerCollider
+            ? contact.otherCollider
+            : contact.collider;
+    }
+
+    private Vector2 GetNormalTowardPlayer(ContactPoint2D contact)
+    {
+        Vector2 normal = contact.normal;
+        Vector2 towardPlayer = (Vector2)playerCollider.bounds.center - contact.point;
+
+        if (Vector2.Dot(normal, towardPlayer) < 0f)
+        {
+            normal = -normal;
+        }
+
+        return normal;
+    }
+
+    private void ResetAfterCrush()
+    {
+        // Avoid a second reset while the old physics contacts are being cleared.
+        nextAllowedCrushResetTime = Time.unscaledTime + 0.25f;
+
+        if (runResetManager == null)
+        {
+            runResetManager = FindAnyObjectByType<RunResetManager>();
+        }
+
+        if (runResetManager != null)
+        {
+            runResetManager.ResetRun();
+        }
+        else
+        {
+            // The tutorial has no run manager, so return to its original spawn.
+            ResetForNewRun(initialSpawnPosition);
         }
     }
 
