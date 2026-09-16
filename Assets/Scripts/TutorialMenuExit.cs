@@ -6,7 +6,10 @@ public class TutorialMenuExit : MonoBehaviour
 {
     private void Update()
     {
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (
+            Keyboard.current != null &&
+            Keyboard.current.escapeKey.wasPressedThisFrame
+        )
         {
             SceneManager.LoadScene("MainMenu");
         }

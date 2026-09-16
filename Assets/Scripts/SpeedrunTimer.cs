@@ -24,6 +24,9 @@ public class SpeedrunTimer : MonoBehaviour
 
     public void StartTimer()
     {
+        // Crossing the start trigger again should not restart an active run.
+        if (timerRunning) return;
+
         elapsedTime = 0f;
         timerRunning = true;
 
@@ -36,6 +39,9 @@ public class SpeedrunTimer : MonoBehaviour
 
     public void StopTimer()
     {
+        // Ignore the finish trigger until a run has actually started.
+        if (!timerRunning) return;
+
         timerRunning = false;
 
         // Stop recording when the player crosses the finish

@@ -4533,8 +4533,8 @@ MonoBehaviour:
   speedrunTimer: {fileID: 743393100}
   finishPanel: {fileID: 1348291030}
   nameInput: {fileID: 1158349293}
-  playerCamera: {fileID: 0}
-  ghostPlayback: {fileID: 0}
+  playerCamera: {fileID: 717907109}
+  ghostPlayback: {fileID: 1761926193}
 --- !u!1 &744285985
 GameObject:
   m_ObjectHideFlags: 0
@@ -6326,7 +6326,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 12
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
