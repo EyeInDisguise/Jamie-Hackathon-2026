@@ -13,39 +13,32 @@ public class CameraZoomTrigger : MonoBehaviour
         // Find the camera automatically if it wasn't assigned
         if (playerCamera == null)
         {
-            playerCamera = FindFirstObjectByType<PlayerCamera>();
+            playerCamera = FindAnyObjectByType<PlayerCamera>();
         }
 
         if (playerCamera == null)
         {
-       //     Debug.LogError("CameraZoomTrigger could not find PlayerCamera!");
+            Debug.LogError("CameraZoomTrigger could not find PlayerCamera!", this);
+            enabled = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-      //  Debug.Log("Something entered zoom trigger: " + other.name);
-
         if (!other.CompareTag("Player"))
         {
             return;
         }
-
-     //   Debug.Log("Player entered zoom trigger");
 
         playerCamera.SetZoom(zoomedOutSize);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-      //  Debug.Log("Something left zoom trigger: " + other.name);
-
         if (!other.CompareTag("Player"))
         {
             return;
         }
-
-      //  Debug.Log("Player left zoom trigger");
 
         playerCamera.ResetZoom();
     }
