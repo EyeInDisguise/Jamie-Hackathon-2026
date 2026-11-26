@@ -635,11 +635,30 @@ public class PlayerController : MonoBehaviour
         AudioManager.Instance?.PlayAbilitySelect();
     }
 
+    // Freeze for when player is finished
+    public void Freeze()
+    {
+        // Stop a dash or time stop that's still running
+        StopAllCoroutines();
+
+        // Remove momentum
+        rb.linearVelocity = Vector2.zero;
+
+        // Stop gravity and physics from moving the body
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        
+        // Turn off this script: stops Update, FixedUpdate and input
+        enabled = false;
+    }
+    
     // Reset the player without reloading the scene
     public void ResetForNewRun(Vector3 startPosition)
     {
         // Stop dash/time stop from the previous run
         StopAllCoroutines();
+
+        // Unfreeze physics so gravity works again
+        rb.bodyType = RigidbodyType2D.Dynamic;
 
         // Teleport back and remove momentum
         rb.position = startPosition;
@@ -684,5 +703,8 @@ public class PlayerController : MonoBehaviour
             animator.Rebind();
             animator.Update(0f);
         }
+        
+        // Unfreeze the player so they can move again
+        enabled = true;
     }
 }

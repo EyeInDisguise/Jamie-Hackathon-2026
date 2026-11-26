@@ -18,6 +18,9 @@ public class SpeedrunTimer : MonoBehaviour
     [SerializeField] private GhostRecorder ghostRecorder;
     [SerializeField] private GhostPlayback ghostPlayback;
 
+    // Frozen when the run finishes
+    [SerializeField] private PlayerController playerController;
+
     private float elapsedTime;
     private TimerState currentState;
     
@@ -55,6 +58,9 @@ public class SpeedrunTimer : MonoBehaviour
         if (currentState != TimerState.Running) return;
         SetTimerState(TimerState.Finished);
 
+        // Freeze the player
+        playerController.Freeze();
+        
         // Stop recording when the player crosses the finish
         ghostRecorder.StopRecording();
 
