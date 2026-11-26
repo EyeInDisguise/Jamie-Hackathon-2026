@@ -4470,6 +4470,7 @@ MonoBehaviour:
   leaderboardManager: {fileID: 743393102}
   ghostRecorder: {fileID: 743393103}
   ghostPlayback: {fileID: 1761926193}
+  playerController: {fileID: 1491022162}
 --- !u!4 &743393101
 Transform:
   m_ObjectHideFlags: 0
@@ -6906,7 +6907,7 @@ SpriteRenderer:
   m_Size: {x: 15, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!4 &1182738497
@@ -7280,7 +7281,7 @@ SpriteRenderer:
   m_Size: {x: 4.74, y: 4.74}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!4 &1222167691
@@ -8582,6 +8583,9 @@ MonoBehaviour:
   ceilingCheck: {fileID: 1277019692}
   timeStopDuration: 3
   abilityUI: {fileID: 1720178719}
+  runResetManager: {fileID: 0}
+  minCrushSpeed: 0.05
+  opposingSurfaceDot: -0.75
 --- !u!4 &1491022165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: a7c3b3ed9c69849e0b887fbef5f9b47d, type: 3}
