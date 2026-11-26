@@ -1441,7 +1441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   musicSource: {fileID: 447155376}
   sfxSource: {fileID: 525166072}
-  backgroundMusic: {fileID: 8300000, guid: 4be64747f61a94aec911279ad2a9185d, type: 3}
+  backgroundMusic: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 5b53d2fad23f842eb91f450b3866aaca, type: 3}
   landSound: {fileID: 8300000, guid: c08f1ce45b28a4f09a354592060c45c3, type: 3}
   dashSound: {fileID: 8300000, guid: b5e5ec92f045d4accad1626eaa5c1eef, type: 3}
