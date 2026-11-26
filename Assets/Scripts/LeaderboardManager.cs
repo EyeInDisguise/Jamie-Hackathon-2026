@@ -184,6 +184,9 @@ public class LeaderboardManager : MonoBehaviour
 
     void Update()
     {
+        if (!Application.isEditor) return; // Stop if NOT in editor
+        if (nameInput.isFocused) return; // Stop if player typing name
+        
         if (
             Keyboard.current != null &&
             Keyboard.current.rKey.wasPressedThisFrame
