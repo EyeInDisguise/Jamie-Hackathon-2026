@@ -250,11 +250,11 @@ public class PlayerController : MonoBehaviour
         // Flip the player depending on direction
         if (horizontalInput > 0f)
         {
-            spriteRenderer.flipX = gravityFlipped;
+            spriteRenderer.flipX = false;
         }
         else if (horizontalInput < 0f)
         {
-            spriteRenderer.flipX = !gravityFlipped;
+            spriteRenderer.flipX = true;
         }
 
         CheckWallStatus();
@@ -606,10 +606,11 @@ public class PlayerController : MonoBehaviour
 
         rb.gravityScale *= -1f;
 
-        visualPivot.localRotation =
+        // Mirror vertically (not rotate), so the player keeps facing the same way
+        visualPivot.localScale =
             gravityFlipped
-                ? Quaternion.Euler(0f, 0f, 180f)
-                : Quaternion.identity;
+                ? new Vector3(1f, -1f, 1f)
+                : Vector3.one;
 
         AudioManager.Instance?.PlayGravityFlip();
     }
@@ -668,7 +669,7 @@ public class PlayerController : MonoBehaviour
         // Reset gravity
         gravityFlipped = false;
         rb.gravityScale = normalGravityScale;
-        visualPivot.localRotation = Quaternion.identity;
+        visualPivot.localScale = Vector3.one;
         spriteRenderer.flipX = false;
 
         // Reset ability/movement state
