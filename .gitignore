@@ -113,3 +113,7 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 .DS_Store
+
+# Editor and tool config
+.idea/
+.mcp.json
