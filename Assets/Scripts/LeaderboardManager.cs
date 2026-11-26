@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class LeaderboardManager : MonoBehaviour
 {
+    private const int MaxPlayerNameLength = 12;
+
     [SerializeField] private GameObject finishPanel;
     [SerializeField] private TMP_Text finalTimeText;
     [SerializeField] private TMP_InputField nameInput;
@@ -75,12 +77,20 @@ public class LeaderboardManager : MonoBehaviour
     {
         if (scoreSubmitted) return;
 
-        string playerName = nameInput.text.Trim();
+        string playerName = nameInput.text
+            .Replace('\n', ' ')
+            .Replace('\r', ' ')
+            .Trim();
 
         if (playerName.Length == 0)
         {
             //Debug.Log("Enter a name first");
             return;
+        }
+
+        if (playerName.Length > MaxPlayerNameLength)
+        {
+            playerName = playerName.Substring(0, MaxPlayerNameLength);
         }
 
         // Check against the current #1 BEFORE inserting this score
@@ -164,12 +174,20 @@ public class LeaderboardManager : MonoBehaviour
 
         UpdateLeaderboardText();
 
+        if (ghostPlayback != null)
+        {
+            ghostPlayback.ClearBestGhost();
+        }
+
        // Debug.Log("Leaderboard reset");
     }
 
     void Update()
     {
-        if (Keyboard.current.rKey.wasPressedThisFrame)
+        if (
+            Keyboard.current != null &&
+            Keyboard.current.rKey.wasPressedThisFrame
+        )
         {
             ResetLeaderboard();
         }
