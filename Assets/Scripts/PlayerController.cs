@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour
             gravityFlipped ? -rb.linearVelocity.y : rb.linearVelocity.y;
 
         // Reset dash when touching ground
-        if (isGrounded)
+        if (isGrounded && !isDashing)
         {
             canDash = true;
         }
